@@ -1,3 +1,3 @@
 """
-Career Compass Agent Tools
+IBM_PROJECT Agent Tools
 """

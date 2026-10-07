@@ -40,8 +40,8 @@ career_companion = CareerCompanionAgent(
 def home():
     return jsonify({
         "success": True,
-        "agent": "Career Compass Companion",
-        "message": "Career Compass Agent is running.",
+        "agent": "IBM_PROJECT Companion",
+        "message": "IBM_PROJECT Agent is running.",
         "status": "online"
     })
 
@@ -176,7 +176,7 @@ def chat():
             session_id = career_companion.new_session()
 
         # -------------------------------------------------
-        # Run Career Compass Agent
+        # Run IBM_PROJECT Agent
         # -------------------------------------------------
 
         result = career_companion.chat(
@@ -313,7 +313,7 @@ def test():
 
     return jsonify({
         "success": True,
-        "message": "Career Compass API is working.",
+        "message": "IBM_PROJECT API is working.",
         "endpoints": {
             "health": "/",
             "test": "/api/test",
@@ -359,7 +359,7 @@ if __name__ == "__main__":
 
     print()
     print("=" * 60)
-    print("        CAREER COMPASS COMPANION AGENT")
+    print("        IBM_PROJECT COMPANION AGENT")
     print("=" * 60)
     print()
     print("Backend URL:")

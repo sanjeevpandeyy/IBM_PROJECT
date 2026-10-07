@@ -4,7 +4,7 @@ import re
 class AgentPlanner:
 
     """
-    Career Compass Agent Planner
+    IBM_PROJECT Agent Planner
 
     Responsibilities:
     - Detect the user's intent

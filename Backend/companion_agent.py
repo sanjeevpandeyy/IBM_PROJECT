@@ -1,5 +1,5 @@
 # ============================================================
-# CAREER COMPASS
+# IBM_PROJECT
 # AGENTIC CAREER COUNSELING COMPANION
 # ============================================================
 
@@ -21,7 +21,7 @@ from Tools.market_tool import MarketTool
 class CareerCompanionAgent:
 
     """
-    Main Career Compass Agent.
+    Main IBM_PROJECT Agent.
 
     Responsibilities:
 
@@ -977,7 +977,7 @@ class CareerCompanionAgent:
         if intent == "greeting":
 
             return (
-                "Hey! 👋 I'm Career Compass.\n\n"
+                "Hey! 👋 I'm IBM_PROJECT.\n\n"
                 "I can help you discover careers, "
                 "identify skill gaps, build a roadmap, "
                 "choose projects, find learning resources "
@@ -1176,7 +1176,7 @@ class CareerCompanionAgent:
 
                 response += (
                     "This comparison is based on the "
-                    "skills in your current Career Compass "
+                    "skills in your current IBM_PROJECT "
                     "profile and the career requirements "
                     "stored in the knowledge base."
                 )
@@ -1546,7 +1546,7 @@ class CareerCompanionAgent:
         return (
             "I understand what you're asking. "
             "Tell me a little more about what you want "
-            "to achieve, and I'll use your Career Compass "
+            "to achieve, and I'll use your IBM_PROJECT "
             "profile to guide you."
         )
 
@@ -1568,7 +1568,7 @@ class CareerCompanionAgent:
 
         system_prompt = """
 
-You are Career Compass, an agentic career counseling
+You are IBM_PROJECT, an agentic career counseling
 companion for college students.
 
 Use the supplied profile, analysis and tool results
@@ -1624,7 +1624,7 @@ Rules:
     - which currently fits the student's skills better
 
 17. Skill-fit scores from career_comparison are based on
-    the student's current skills and the Career Compass
+    the student's current skills and the IBM_PROJECT
     knowledge base. Do not describe them as job-market
     probabilities.
 """
@@ -1671,7 +1671,7 @@ Rules:
                         +
                         "\n\n"
                         +
-                        "Career Compass context:\n\n"
+                        "IBM_PROJECT context:\n\n"
                         +
                         str(context)
                     )

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-#  Career Compass — One-Click Startup Script
+#  IBM_PROJECT — One-Click Startup Script
 #  Usage:  bash start.sh
 # ============================================================
 
@@ -19,7 +19,7 @@ VENV_DIR="$BACKEND_DIR/venv"
 
 echo ""
 echo -e "${CYAN}${BOLD}============================================================${RESET}"
-echo -e "${CYAN}${BOLD}         CAREER COMPASS — AGENTIC CAREER COMPANION${RESET}"
+echo -e "${CYAN}${BOLD}         IBM_PROJECT — AGENTIC CAREER COMPANION${RESET}"
 echo -e "${CYAN}${BOLD}============================================================${RESET}"
 echo ""
 

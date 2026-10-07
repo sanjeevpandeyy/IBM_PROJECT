@@ -1,10 +1,10 @@
-# 🎯 Career Compass 
+# 🎯 IBM_PROJECT 
 
 ## Agentic Career Counseling Companion
 
-Career Compass is an **Agentic Career Counseling Companion** designed to help students make informed career decisions based on their **academic performance, skills, interests, projects, experience, and career goals**.
+IBM_PROJECT is an **Agentic Career Counseling Companion** designed to help students make informed career decisions based on their **academic performance, skills, interests, projects, experience, and career goals**.
 
-Instead of providing generic career suggestions, Career Compass analyzes a student's profile, identifies suitable career pathways, detects skill gaps, recommends learning resources and projects, and provides actionable guidance through a conversational interface.
+Instead of providing generic career suggestions, IBM_PROJECT analyzes a student's profile, identifies suitable career pathways, detects skill gaps, recommends learning resources and projects, and provides actionable guidance through a conversational interface.
 
 The project explores the use of **Agentic AI and IBM Granite** to transform career counseling from a one-time recommendation into a continuous and personalized career journey.
 
@@ -14,7 +14,7 @@ The project explores the use of **Agentic AI and IBM Granite** to transform care
 
 | Category | Details |
 |----------|---------|
-| Project Title | Career Compass |
+| Project Title | IBM_PROJECT |
 | Domain | Education |
 | Project Type | Agentic Career Counseling Companion |
 | Primary Focus | Personalized Career Guidance |
@@ -38,13 +38,13 @@ Students often struggle to make informed career decisions because:
 - Generic career quizzes often provide limited guidance.
 - Students may know which career interests them but not know how to become job-ready.
 
-Career Compass addresses this problem by providing a personalized career guidance companion that analyzes the student's profile and generates actionable career pathways.
+IBM_PROJECT addresses this problem by providing a personalized career guidance companion that analyzes the student's profile and generates actionable career pathways.
 
 ---
 
 # 💡 Proposed Solution
 
-Career Compass acts as an intelligent career companion that analyzes:
+IBM_PROJECT acts as an intelligent career companion that analyzes:
 
 - Academic performance
 - Technical skills
@@ -65,7 +65,7 @@ Student Profile
         ↓
 Understand User Intent
         ↓
-Career Compass Agent
+IBM_PROJECT Agent
         ↓
 Plan the Required Task
         ↓
@@ -83,7 +83,7 @@ Maintain Conversation Context
 
 ## 🎯 1. Personalized Career Recommendations
 
-Career Compass analyzes the student's profile and identifies career pathways that best match their current skills, interests and goals.
+IBM_PROJECT analyzes the student's profile and identifies career pathways that best match their current skills, interests and goals.
 
 ---
 
@@ -102,7 +102,7 @@ It identifies:
 
 ## 🗺️ 3. Career Roadmaps
 
-Career Compass provides structured guidance on what the student should focus on to progress toward their desired career.
+IBM_PROJECT provides structured guidance on what the student should focus on to progress toward their desired career.
 
 ---
 
@@ -114,7 +114,7 @@ The system recommends learning areas and resources based on the student's select
 
 ## 💻 5. Project Recommendations
 
-Career Compass recommends practical projects that can help students build portfolio-ready skills for their target career.
+IBM_PROJECT recommends practical projects that can help students build portfolio-ready skills for their target career.
 
 ---
 
@@ -136,7 +136,7 @@ Example:
 
 ## 💬 8. Conversational Career Companion
 
-Students can interact with Career Compass using natural-language questions.
+Students can interact with IBM_PROJECT using natural-language questions.
 
 Examples:
 
@@ -156,27 +156,27 @@ Examples:
 
 ## 🧠 9. Conversation Memory
 
-Career Compass maintains session-level conversation context so that students can ask follow-up questions without repeatedly providing the same information.
+IBM_PROJECT maintains session-level conversation context so that students can ask follow-up questions without repeatedly providing the same information.
 
 Example:
 
     User:
     Which career is suitable for me?
 
-    Career Compass:
+    IBM_PROJECT:
     Data Analyst is a strong match.
 
     User:
     What skills am I missing?
 
-    Career Compass:
+    IBM_PROJECT:
     Based on your previous profile, you should focus on...
 
 ---
 
 ## 📚 10. Knowledge-Driven Guidance
 
-Career Compass uses structured knowledge sources containing:
+IBM_PROJECT uses structured knowledge sources containing:
 
 - Career roles
 - Required skills
@@ -189,7 +189,7 @@ This allows the system to provide structured and consistent recommendations.
 
 # 🤖 Role of Agentic AI
 
-Career Compass follows an agentic workflow rather than functioning as a simple question-and-answer application.
+IBM_PROJECT follows an agentic workflow rather than functioning as a simple question-and-answer application.
 
 The agent follows the cycle:
 

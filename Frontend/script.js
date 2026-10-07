@@ -1,5 +1,5 @@
 /* ============================================================
-   CAREER COMPASS — FRONTEND JAVASCRIPT
+   IBM_PROJECT — FRONTEND JAVASCRIPT
    Complete rewrite: animated counters, SVG rings, skeleton
    loaders, tabbed dashboard, IBM-inspired interactions
    ============================================================ */
@@ -726,7 +726,7 @@ async function sendChatMessage() {
   } catch (err) {
     console.error(err);
     removeTypingIndicator();
-    addBotMessage('⚠️ I couldn\'t reach the Career Compass agent. Please confirm that `python app.py` is running on port 5000.');
+    addBotMessage('⚠️ I couldn\'t reach the IBM_PROJECT agent. Please confirm that `python app.py` is running on port 5000.');
   } finally {
     isBusy = false;
     setInputLock(false);

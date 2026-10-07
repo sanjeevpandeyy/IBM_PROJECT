@@ -1,5 +1,5 @@
 # ============================================================
-# CAREER COMPASS - CAREER TOOL
+# IBM_PROJECT - CAREER TOOL
 # Career Analysis + Career Comparison
 # ============================================================
 
@@ -552,7 +552,7 @@ class CareerTool:
     # ========================================================
     # CALCULATE SKILL FIT
     #
-    # Same basic weighting philosophy as Career Compass:
+    # Same basic weighting philosophy as IBM_PROJECT:
     #
     # Core      = 15
     # Important = 7
