@@ -236,3 +236,28 @@ The agent follows the cycle:
 ┌─────────────────────────┐
 │     MEMORY / CONTEXT    │
 └─────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Start (Running the Project)
+
+### 1. One-Click Start (Recommended)
+From the root directory, simply run:
+```bash
+bash start.sh
+```
+This will automatically create a Python virtual environment, install dependencies, and launch the Flask server on `http://127.0.0.1:5000`.
+
+### 2. Manual Start
+```bash
+cd Backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+
+### 3. Open the Frontend
+Simply open `Frontend/index.html` in any web browser (or serve it with Live Server / any local HTTP server).
+

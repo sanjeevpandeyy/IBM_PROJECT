@@ -1,2490 +1,886 @@
-/* =========================================================
-   CAREER COMPASS - FRONTEND JAVASCRIPT
-   ========================================================= */
+/* ============================================================
+   CAREER COMPASS — FRONTEND JAVASCRIPT
+   Complete rewrite: animated counters, SVG rings, skeleton
+   loaders, tabbed dashboard, IBM-inspired interactions
+   ============================================================ */
+
+'use strict';
+
+/* ============================================================
+   CONFIGURATION
+============================================================ */
+const API_BASE = 'http://127.0.0.1:5000';
 
 
-const API_BASE_URL = "http://127.0.0.1:5000";
-
-
-/* =========================================================
+/* ============================================================
    GLOBAL STATE
-   ========================================================= */
-
-let sessionId =
-    localStorage.getItem("careerCompassSession") || null;
-
-
-let studentProfile =
-    JSON.parse(
-        localStorage.getItem("careerCompassProfile") || "{}"
-    );
+============================================================ */
+let sessionId      = localStorage.getItem('ccSession') || null;
+let isBusy         = false;
+let studentProfile = JSON.parse(localStorage.getItem('ccProfile') || '{}');
+let selectedSkills = new Set(studentProfile.skills || []);
+let lastAnalysis   = studentProfile.lastAnalysis || null;
 
 
-let selectedSkills =
-    new Set(studentProfile.skills || []);
-
-
-let isBusy = false;
-
-
-
-/* =========================================================
-   CAREER CATALOG
-   ========================================================= */
-
-let careerCatalog = [
-
-    {
-        title: "Data Analyst",
-        category: "Analytics",
-
-        description:
-            "Use data, SQL, spreadsheets and visualization to turn business questions into insights.",
-
-        skills: [
-            "SQL",
-            "Excel",
-            "Data Visualization",
-            "Statistics",
-            "Power BI"
-        ]
-    },
-
-
-    {
-        title: "Data Scientist",
-        category: "Data Science",
-
-        description:
-            "Build analytical and predictive solutions using statistics, programming and machine learning.",
-
-        skills: [
-            "Python",
-            "SQL",
-            "Statistics",
-            "Machine Learning",
-            "Data Visualization"
-        ]
-    },
-
-
-    {
-        title: "Business Analyst",
-        category: "Business",
-
-        description:
-            "Bridge business needs and technical solutions through requirements, analysis and communication.",
-
-        skills: [
-            "Excel",
-            "SQL",
-            "Communication",
-            "Requirements Analysis",
-            "Data Visualization"
-        ]
-    },
-
-
-    {
-        title: "Operations Analyst",
-        category: "Operations",
-
-        description:
-            "Improve processes and decisions by analyzing operational data, KPIs and workflows.",
-
-        skills: [
-            "Excel",
-            "SQL",
-            "Data Visualization",
-            "Statistics",
-            "Communication"
-        ]
-    },
-
-
-    {
-        title: "Cloud Engineer",
-        category: "Cloud & DevOps",
-
-        description:
-            "Design, deploy and maintain reliable cloud infrastructure and services.",
-
-        skills: [
-            "Cloud Computing",
-            "Linux",
-            "Networking",
-            "Python",
-            "DevOps"
-        ]
-    },
-
-
-    {
-        title: "Software Developer",
-        category: "Software",
-
-        description:
-            "Design, build, test and maintain software applications and practical digital solutions.",
-
-        skills: [
-            "Python",
-            "JavaScript",
-            "HTML",
-            "CSS",
-            "SQL",
-            "Git"
-        ]
-    }
-
+/* ============================================================
+   CAREER CATALOG (local knowledge for explorer UI)
+============================================================ */
+const careerCatalog = [
+  {
+    title: 'Data Analyst',
+    category: 'Analytics',
+    description: 'Use SQL, spreadsheets and visualisation tools to turn business questions into clear, actionable insights.',
+    skills: ['SQL', 'Excel', 'Power BI', 'Data Visualisation', 'Statistics']
+  },
+  {
+    title: 'Data Scientist',
+    category: 'Data Science',
+    description: 'Build predictive and analytical solutions using statistics, Python and machine learning techniques.',
+    skills: ['Python', 'SQL', 'Machine Learning', 'Statistics', 'Data Visualisation']
+  },
+  {
+    title: 'Business Analyst',
+    category: 'Business',
+    description: 'Bridge business needs and technical solutions through requirements, stakeholder analysis and communication.',
+    skills: ['Excel', 'SQL', 'Communication', 'Requirements Analysis', 'Data Visualisation']
+  },
+  {
+    title: 'Operations Analyst',
+    category: 'Operations',
+    description: 'Improve processes and decisions by analysing operational data, KPIs, dashboards and workflows.',
+    skills: ['Excel', 'SQL', 'Data Visualisation', 'Statistics', 'Communication']
+  },
+  {
+    title: 'Cloud Engineer',
+    category: 'Cloud & DevOps',
+    description: 'Design, deploy and maintain scalable cloud infrastructure and services across major cloud platforms.',
+    skills: ['Cloud Computing', 'Linux', 'Networking', 'Python', 'DevOps']
+  },
+  {
+    title: 'Software Developer',
+    category: 'Software',
+    description: 'Design, build, test and maintain software applications and practical digital solutions.',
+    skills: ['Python', 'JavaScript', 'HTML/CSS', 'SQL', 'Git/GitHub']
+  },
+  {
+    title: 'ML Engineer',
+    category: 'AI / ML',
+    description: 'Deploy, optimise and scale machine learning models into production systems and pipelines.',
+    skills: ['Python', 'Machine Learning', 'SQL', 'Cloud Computing', 'DevOps']
+  },
+  {
+    title: 'Cybersecurity Analyst',
+    category: 'Security',
+    description: 'Protect systems, networks and data by monitoring threats, analysing incidents and implementing controls.',
+    skills: ['Networking', 'Linux', 'Security Analysis', 'Python', 'Cloud Computing']
+  }
 ];
 
 
-
-/* =========================================================
+/* ============================================================
    SKILL CATALOG
-   ========================================================= */
-
+============================================================ */
 const skillCatalog = [
-
-    "Python",
-    "SQL",
-    "Excel",
-    "Tableau",
-    "Power BI",
-    "Data Visualization",
-    "Statistics",
-    "Machine Learning",
-
-    "JavaScript",
-    "HTML",
-    "CSS",
-    "Java",
-    "C++",
-    "Git",
-
-    "Linux",
-    "Cloud Computing",
-    "DevOps",
-    "Networking",
-
-    "Communication",
-    "Problem Solving",
-    "Business Analysis",
-    "Requirements Analysis",
-    "Project Management"
-
+  'Python', 'SQL', 'Excel', 'Tableau', 'Power BI',
+  'Data Visualisation', 'Statistics', 'Machine Learning',
+  'JavaScript', 'HTML/CSS', 'Java', 'C++', 'Git/GitHub',
+  'Linux', 'Cloud Computing', 'DevOps', 'Networking',
+  'Communication', 'Problem Solving', 'Business Analysis',
+  'Requirements Analysis', 'Project Management', 'R',
+  'Deep Learning', 'NLP', 'Security Analysis', 'Agile/Scrum'
 ];
 
 
-
-/* =========================================================
-   PAGE LOAD
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        applySavedTheme();
-
-        renderParticles();
-
-        renderSkills();
-
-        restoreProfileToForm();
-
-        updateSkillCount();
-
-        renderCareers();
-
-        updateWelcome();
-
-        setupCustomSkillInput();
-
-        checkBackend();
-
-        setTimeout(
-            () => observeCards(),
-            150
-        );
-
-    }
-);
+/* ============================================================
+   DOM READY
+============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  applySavedTheme();
+  spawnParticles();
+  renderSkillChips();
+  restoreFormValues();
+  updateSkillCount();
+  renderCareers();
+  buildFilterChips();
+  updateWelcome();
+  animateHeroStats();
+  setupCustomSkillInput();
+  checkBackend();
+  initRevealObserver();
+  showUnreadBadge();
+});
 
 
-
-/* =========================================================
+/* ============================================================
    SECTION NAVIGATION
-   ========================================================= */
+============================================================ */
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.section === id));
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'careers') renderCareers();
+  if (id === 'results') animateRings();
+  // Close mobile nav
+  document.getElementById('navbar')?.classList.remove('nav-mobile-open');
+}
 
-function showSection(sectionId) {
-
-    document
-        .querySelectorAll(".section")
-        .forEach(
-            section =>
-                section.classList.remove("active")
-        );
-
-
-    const target =
-        document.getElementById(sectionId);
-
-
-    if (!target) return;
-
-
-    target.classList.add("active");
-
-
-    document
-        .querySelectorAll(".nav-link")
-        .forEach(
-            button => {
-
-                button.classList.toggle(
-                    "active",
-                    button.dataset.section === sectionId
-                );
-
-            }
-        );
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-
-    if (sectionId === "careers") {
-
-        renderCareers();
-
-    }
-
+function toggleMobileNav() {
+  document.getElementById('navbar')?.classList.toggle('nav-mobile-open');
 }
 
 
-
-/* =========================================================
+/* ============================================================
    DARK MODE
-   ========================================================= */
-
+============================================================ */
 function toggleTheme() {
-
-    const dark =
-        !document.body.classList.contains("dark");
-
-
-    document.body.classList.toggle(
-        "dark",
-        dark
-    );
-
-
-    localStorage.setItem(
-        "careerCompassTheme",
-        dark ? "dark" : "light"
-    );
-
-
-    updateThemeButton();
-
+  const dark = !document.body.classList.contains('dark');
+  document.body.classList.toggle('dark', dark);
+  localStorage.setItem('ccTheme', dark ? 'dark' : 'light');
+  refreshThemeBtn();
 }
-
-
 
 function applySavedTheme() {
+  const saved = localStorage.getItem('ccTheme');
+  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+  const dark = saved ? saved === 'dark' : prefersDark;
+  document.body.classList.toggle('dark', dark);
+  refreshThemeBtn();
+}
 
-    const saved =
-        localStorage.getItem(
-            "careerCompassTheme"
-        );
-
-
-    const shouldDark =
-        saved
-            ? saved === "dark"
-            : window.matchMedia &&
-              window.matchMedia(
-                  "(prefers-color-scheme: dark)"
-              ).matches;
-
-
-    document.body.classList.toggle(
-        "dark",
-        shouldDark
-    );
-
-
-    updateThemeButton();
-
+function refreshThemeBtn() {
+  const btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  const dark = document.body.classList.contains('dark');
+  btn.textContent = dark ? '☀️' : '🌙';
+  btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
 }
 
 
-
-function updateThemeButton() {
-
-    const button =
-        document.getElementById(
-            "themeToggle"
-        );
-
-
-    if (!button) return;
-
-
-    const dark =
-        document.body.classList.contains(
-            "dark"
-        );
-
-
-    button.textContent =
-        dark ? "☀️" : "🌙";
-
-
-    button.title =
-        dark
-            ? "Switch to light mode"
-            : "Switch to dark mode";
-
-}
-
-
-
-/* =========================================================
-   DYNAMIC WELCOME MESSAGE
-   ========================================================= */
-
+/* ============================================================
+   ANIMATED WELCOME
+============================================================ */
 function updateWelcome() {
-
-    const name =
-        studentProfile.name ||
-        document.getElementById("name")?.value ||
-        "";
-
-
-    const hour =
-        new Date().getHours();
-
-
-    let greeting;
-
-
-    if (hour < 12) {
-
-        greeting = "Good morning";
-
-    }
-
-    else if (hour < 18) {
-
-        greeting = "Good afternoon";
-
-    }
-
-    else {
-
-        greeting = "Good evening";
-
-    }
-
-
-    const welcome =
-        document.getElementById(
-            "welcomeLine"
-        );
-
-
-    if (welcome) {
-
-        welcome.textContent =
-            `${greeting}${name ? ", " + name : ""} 👋`;
-
-    }
-
-
-    const resultsGreeting =
-        document.getElementById(
-            "resultsGreeting"
-        );
-
-
-    if (resultsGreeting) {
-
-        resultsGreeting.textContent =
-            name
-                ? `Here is your personalized career snapshot, ${name}.`
-                : "Your personalized career snapshot.";
-
-    }
-
-
-    if (studentProfile.topCareer) {
-
-        const heroCareer =
-            document.getElementById(
-                "heroCareer"
-            );
-
-
-        if (heroCareer) {
-
-            heroCareer.textContent =
-                studentProfile.topCareer;
-
-        }
-
-    }
-
+  const name = studentProfile.name || '';
+  const h    = new Date().getHours();
+  const greet = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  const line  = document.getElementById('welcomeLine');
+  if (line) line.textContent = greet + (name ? ', ' + name : '') + ' 👋';
+  const rg = document.getElementById('resultsGreeting');
+  if (rg) rg.textContent = name
+    ? `Here is your personalised career snapshot, ${name}.`
+    : 'Your personalised career snapshot.';
+  if (studentProfile.topCareer) {
+    const hc = document.getElementById('heroCareer');
+    if (hc) hc.textContent = studentProfile.topCareer;
+  }
 }
 
 
+/* ============================================================
+   ANIMATED HERO STATS COUNTER
+============================================================ */
+function animateHeroStats() {
+  animateCounter('statCareers', 0, careerCatalog.length, 800, '+ ');
+  animateCounter('statSkills',  0, skillCatalog.length,  900, '+ ');
+}
 
-/* =========================================================
-   ANIMATED PARTICLES
-   ========================================================= */
+function animateCounter(id, from, to, duration, suffix = '') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = performance.now();
+  const step = ts => {
+    const progress = Math.min((ts - start) / duration, 1);
+    const val = Math.round(from + (to - from) * easeOut(progress));
+    el.textContent = val + (progress < 1 ? '' : suffix);
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
 
-function renderParticles() {
-
-    const container =
-        document.getElementById(
-            "particles"
-        );
-
-
-    if (!container) return;
-
-
-    for (
-        let i = 0;
-        i < 18;
-        i++
-    ) {
-
-        const particle =
-            document.createElement(
-                "span"
-            );
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
 
-        particle.className =
-            "particle";
-
-
-        particle.style.left =
-            `${Math.random() * 100}%`;
-
-
-        particle.style.animationDuration =
-            `${10 + Math.random() * 15}s`;
-
-
-        particle.style.animationDelay =
-            `${-Math.random() * 20}s`;
-
-
-        particle.style.transform =
-            `scale(${0.5 + Math.random() * 1.5})`;
-
-
-        container.appendChild(
-            particle
-        );
-
-    }
-
+/* ============================================================
+   PARTICLES
+============================================================ */
+function spawnParticles() {
+  const container = document.getElementById('particles');
+  if (!container) return;
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('span');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      animation-duration: ${12 + Math.random() * 16}s;
+      animation-delay: ${-Math.random() * 20}s;
+      transform: scale(${0.4 + Math.random() * 1.6});
+    `;
+    container.appendChild(p);
+  }
 }
 
 
+/* ============================================================
+   REVEAL ON SCROLL
+============================================================ */
+function initRevealObserver() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
 
-/* =========================================================
+
+/* ============================================================
+   BACKEND HEALTH CHECK
+============================================================ */
+async function checkBackend() {
+  const badge = document.getElementById('statusBadge');
+  const text  = document.getElementById('statusText');
+  try {
+    const r = await fetch(`${API_BASE}/`, { signal: AbortSignal.timeout(4000) });
+    const d = await r.json();
+    if (d.status === 'online') {
+      badge.className = 'status-badge online';
+      text.textContent = 'Backend Online';
+    } else throw new Error();
+  } catch {
+    badge.className = 'status-badge offline';
+    text.textContent = 'Backend Offline';
+  }
+}
+
+
+/* ============================================================
    SKILLS
-   ========================================================= */
-
-function renderSkills() {
-
-    const container =
-        document.getElementById(
-            "skillsContainer"
-        );
-
-
-    if (!container) return;
-
-
-    container.innerHTML = "";
-
-
-    skillCatalog.forEach(
-        skill => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.type = "button";
-
-
-            button.className =
-                "skill-button" +
-                (
-                    selectedSkills.has(skill)
-                        ? " selected"
-                        : ""
-                );
-
-
-            button.textContent =
-                skill;
-
-
-            button.onclick =
-                () => {
-
-                    if (
-                        selectedSkills.has(
-                            skill
-                        )
-                    ) {
-
-                        selectedSkills.delete(
-                            skill
-                        );
-
-                    }
-
-                    else {
-
-                        selectedSkills.add(
-                            skill
-                        );
-
-                    }
-
-
-                    button.classList.toggle(
-                        "selected"
-                    );
-
-
-                    updateSkillCount();
-
-                    saveCurrentProfile(false);
-
-                };
-
-
-            container.appendChild(
-                button
-            );
-
-        }
-    );
-
+============================================================ */
+function renderSkillChips() {
+  const container = document.getElementById('skillsContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  skillCatalog.forEach(skill => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'skill-chip' + (selectedSkills.has(skill) ? ' selected' : '');
+    btn.textContent = skill;
+    btn.onclick = () => {
+      selectedSkills.has(skill) ? selectedSkills.delete(skill) : selectedSkills.add(skill);
+      btn.classList.toggle('selected');
+      updateSkillCount();
+      autoSaveProfile();
+    };
+    container.appendChild(btn);
+  });
 }
-
-
 
 function addCustomSkill() {
-
-    const input =
-        document.getElementById(
-            "customSkill"
-        );
-
-
-    if (!input) return;
-
-
-    const value =
-        input.value.trim();
-
-
-    if (!value) return;
-
-
-    selectedSkills.add(value);
-
-
-    if (
-        !skillCatalog.includes(value)
-    ) {
-
-        skillCatalog.push(value);
-
-    }
-
-
-    input.value = "";
-
-
-    renderSkills();
-
-    updateSkillCount();
-
-    saveCurrentProfile(false);
-
+  const input = document.getElementById('customSkill');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  selectedSkills.add(val);
+  if (!skillCatalog.includes(val)) skillCatalog.push(val);
+  input.value = '';
+  renderSkillChips();
+  updateSkillCount();
+  autoSaveProfile();
+  showToast(`"${val}" added to your skills`, 'success');
 }
-
-
 
 function setupCustomSkillInput() {
-
-    const input =
-        document.getElementById(
-            "customSkill"
-        );
-
-
-    if (!input) return;
-
-
-    input.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                event.preventDefault();
-
-                addCustomSkill();
-
-            }
-
-        }
-    );
-
+  document.getElementById('customSkill')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); addCustomSkill(); }
+  });
 }
-
-
 
 function updateSkillCount() {
-
-    const element =
-        document.getElementById(
-            "skillCount"
-        );
-
-
-    if (element) {
-
-        element.textContent =
-            selectedSkills.size;
-
-    }
-
+  const el = document.getElementById('skillCount');
+  if (el) el.textContent = selectedSkills.size;
 }
 
 
+/* ============================================================
+   PROFILE — COLLECT / SAVE / RESTORE
+============================================================ */
+function collectProfile() {
+  return clean({
+    name:        val('name'),
+    degree:      val('degree'),
+    cgpa:        parseFloat(val('cgpa')) || undefined,
+    target_role: val('targetRole'),
+    interests:   csvList(val('interests')),
+    skills:      [...selectedSkills],
+    projects:    val('projects'),
+    experience:  val('experience')
+  });
+}
 
-/* =========================================================
-   PROFILE
-   ========================================================= */
+function clean(obj) {
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === '' || v === undefined || v === null) continue;
+    if (Array.isArray(v) && !v.length) continue;
+    out[k] = v;
+  }
+  return out;
+}
 
-function collectStudentProfile() {
+function val(id) { return document.getElementById(id)?.value.trim() || ''; }
+function csvList(text) { return text.split(',').map(s => s.trim()).filter(Boolean); }
 
-    const profile = {
+function autoSaveProfile() {
+  studentProfile = { ...studentProfile, ...collectProfile() };
+  localStorage.setItem('ccProfile', JSON.stringify(studentProfile));
+  updateWelcome();
+}
 
-        name:
-            valueOf("name"),
-
-        degree:
-            valueOf("degree"),
-
-        cgpa:
-            parseFloat(
-                valueOf("cgpa")
-            ) || undefined,
-
-        target_role:
-            valueOf("targetRole"),
-
-        interests:
-            splitList(
-                valueOf("interests")
-            ),
-
-        skills:
-            [...selectedSkills],
-
-        projects:
-            valueOf("projects"),
-
-        experience:
-            valueOf("experience")
-
-    };
-
-
-    Object.keys(profile)
-        .forEach(
-            key => {
-
-                if (
-                    profile[key] === "" ||
-                    profile[key] === undefined ||
-                    (
-                        Array.isArray(
-                            profile[key]
-                        ) &&
-                        !profile[key].length
-                    )
-                ) {
-
-                    delete profile[key];
-
-                }
-
-            }
-        );
-
-
-    return profile;
-
+function restoreFormValues() {
+  const p = studentProfile;
+  const map = { name: 'name', degree: 'degree', target_role: 'targetRole', interests: 'interests', projects: 'projects', experience: 'experience' };
+  for (const [key, id] of Object.entries(map)) {
+    const el = document.getElementById(id);
+    if (!el || p[key] === undefined) continue;
+    el.value = Array.isArray(p[key]) ? p[key].join(', ') : p[key];
+  }
+  if (p.cgpa !== undefined) {
+    const el = document.getElementById('cgpa');
+    if (el) el.value = p.cgpa;
+  }
 }
 
 
-
-function valueOf(id) {
-
-    return (
-        document
-            .getElementById(id)
-            ?.value
-            .trim()
-        || ""
-    );
-
-}
-
-
-
-function splitList(text) {
-
-    return text
-        .split(",")
-        .map(
-            item =>
-                item.trim()
-        )
-        .filter(Boolean);
-
-}
-
-
-
-/* =========================================================
-   SAVE PROFILE
-   ========================================================= */
-
-function saveCurrentProfile(
-    showToastMessage = false
-) {
-
-    const profile =
-        collectStudentProfile();
-
-
-    studentProfile = {
-
-        ...studentProfile,
-
-        ...profile
-
-    };
-
-
-    localStorage.setItem(
-        "careerCompassProfile",
-        JSON.stringify(
-            studentProfile
-        )
-    );
-
-
-    updateWelcome();
-
-
-    if (showToastMessage) {
-
-        showToast(
-            "Profile saved locally ✓"
-        );
-
-    }
-
-}
-
-
-
-/* =========================================================
-   RESTORE PROFILE
-   ========================================================= */
-
-function restoreProfileToForm() {
-
-    const p =
-        studentProfile;
-
-
-    [
-        "name",
-        "degree",
-        "targetRole",
-        "interests",
-        "projects",
-        "experience"
-    ]
-    .forEach(
-        id => {
-
-            const element =
-                document.getElementById(
-                    id
-                );
-
-
-            if (!element) return;
-
-
-            const key =
-                id === "targetRole"
-                    ? "target_role"
-                    : id;
-
-
-            if (
-                p[key] !== undefined
-            ) {
-
-                element.value =
-                    Array.isArray(
-                        p[key]
-                    )
-                        ? p[key].join(", ")
-                        : p[key];
-
-            }
-
-        }
-    );
-
-
-    if (
-        p.cgpa !== undefined &&
-        document.getElementById("cgpa")
-    ) {
-
-        document.getElementById(
-            "cgpa"
-        ).value = p.cgpa;
-
-    }
-
-}
-
-
-
-/* =========================================================
-   ANALYZE PROFILE
-   ========================================================= */
-
+/* ============================================================
+   ANALYSE PROFILE
+============================================================ */
 async function analyzeProfile() {
+  if (isBusy) return;
 
-    if (isBusy) return;
+  const profile = collectProfile();
 
+  if (!profile.name && !profile.skills?.length && !profile.degree) {
+    showToast('Add at least your name, degree or a few skills to get started.', 'error');
+    return;
+  }
 
-    const profile =
-        collectStudentProfile();
+  studentProfile = { ...studentProfile, ...profile };
+  localStorage.setItem('ccProfile', JSON.stringify(studentProfile));
 
+  setLoading(true, 'Analysing your career profile…', 'Evaluating skills, interests and career possibilities.');
+  isBusy = true;
 
-    if (
-        !profile.name &&
-        !profile.skills?.length &&
-        !profile.degree
-    ) {
+  try {
+    const res = await fetch(`${API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile, session_id: sessionId })
+    });
 
-        showToast(
-            "Add a little profile information first."
-        );
+    const data = await res.json();
 
-
-        showSection(
-            "profile"
-        );
-
-
-        return;
-
+    if (!res.ok || data.success === false) {
+      throw new Error(data.error || `Server error ${res.status}`);
     }
 
-
-    studentProfile = {
-
-        ...studentProfile,
-
-        ...profile
-
-    };
-
-
-    localStorage.setItem(
-        "careerCompassProfile",
-        JSON.stringify(
-            studentProfile
-        )
-    );
-
-
-    setLoading(
-        true,
-        "Analyzing your career profile...",
-        "Evaluating skills, interests and career possibilities."
-    );
-
-
-    isBusy = true;
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE_URL}/api/analyze`,
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            profile,
-
-                            session_id:
-                                sessionId
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            data.success === false
-        ) {
-
-            throw new Error(
-                data.error ||
-                `Server error ${response.status}`
-            );
-
-        }
-
-
-        sessionId =
-            data.session_id ||
-            sessionId;
-
-
-        if (sessionId) {
-
-            localStorage.setItem(
-                "careerCompassSession",
-                sessionId
-            );
-
-        }
-
-
-        const analysis =
-            data.analysis ||
-            data.data ||
-            data.result ||
-            data;
-
-
-        renderAnalysis(
-            analysis
-        );
-
-
-        showSection(
-            "results"
-        );
-
-
-        showToast(
-            "Career analysis completed ✓"
-        );
-
+    if (data.session_id) {
+      sessionId = data.session_id;
+      localStorage.setItem('ccSession', sessionId);
     }
 
+    const analysis = data.analysis || data.data || data.result || data;
+    lastAnalysis = analysis;
+    studentProfile.lastAnalysis = analysis;
+    localStorage.setItem('ccProfile', JSON.stringify(studentProfile));
 
-    catch (error) {
+    renderDashboard(analysis);
+    showSection('results');
+    showToast('Career analysis complete ✓', 'success');
 
-        console.error(error);
-
-
-        showToast(
-            "Analysis failed. Check that Flask is running."
-        );
-
-
-        addBotMessage(
-            "⚠️ I couldn't analyze your profile right now. Please make sure the Flask backend is running."
-        );
-
-    }
-
-
-    finally {
-
-        isBusy = false;
-
-        setLoading(
-            false
-        );
-
-    }
-
+  } catch (err) {
+    console.error(err);
+    showToast('Analysis failed. Is the Flask backend running? (`python app.py`)', 'error');
+    addBotMessage('⚠️ I couldn\'t analyse your profile right now. Please make sure the Flask backend is running on port 5000.');
+  } finally {
+    isBusy = false;
+    setLoading(false);
+  }
 }
 
 
+/* ============================================================
+   RENDER DASHBOARD
+============================================================ */
+function renderDashboard(analysis) {
+  if (!analysis || typeof analysis !== 'object') return;
 
-/* =========================================================
-   RENDER ANALYSIS
-   ========================================================= */
+  const careers = normaliseList(
+    analysis.career_matches || analysis.career_recommendations ||
+    analysis.matches || analysis.careers || analysis.recommendations || []
+  );
 
-function renderAnalysis(
-    analysis
-) {
+  const topCareer  = careers[0]?.title || analysis.top_career || analysis.recommended_career || '—';
+  const matchScore = toNum(careers[0]?.score ?? analysis.match_score ?? analysis.score ?? analysis.match);
+  const readiness  = toNum(analysis.readiness ?? analysis.readiness_score ?? analysis.job_readiness ?? analysis.job_readiness_score);
+  const gaps       = asList(analysis.missing_skills || analysis.skill_gaps || analysis.gaps || analysis.missing || []);
+  const steps      = asList(analysis.next_steps || analysis.nextSteps || analysis.actions || []);
 
-    if (
-        !analysis ||
-        typeof analysis !== "object"
-    ) {
+  // KPIs
+  setText('kpiCareer', topCareer);
+  setText('kpiMatch',  matchScore !== null ? Math.round(matchScore) + '%' : '—');
+  setText('kpiReady',  readiness  !== null ? Math.round(readiness)  + '%' : '—');
+  setText('kpiGaps',   gaps.length || '—');
 
-        return;
+  // Hero card
+  setText('heroCareer', topCareer !== '—' ? topCareer : 'Discover your fit');
+  studentProfile.topCareer = topCareer;
 
-    }
+  // Ring scores (deferred so section transition completes)
+  setTimeout(() => {
+    setRing('ringMatch', 'ringMatchVal', matchScore);
+    setRing('ringReady', 'ringReadyVal', readiness);
+  }, 300);
 
-
-    console.log(
-        "Analysis received:",
-        analysis
-    );
-
-
-    const careers =
-        analysis.career_matches ||
-        analysis.career_recommendations ||
-        analysis.matches ||
-        analysis.careers ||
-        analysis.recommendations ||
-        [];
-
-
-    const normalized =
-        Array.isArray(careers)
-            ? careers
-                .map(normalizeCareer)
-                .filter(
-                    item =>
-                        item.title
-                )
-            : [];
-
-
-    const top =
-        normalized[0];
-
-
-    const topTitle =
-        top?.title ||
-        analysis.top_career ||
-        analysis.recommended_career ||
-        analysis.best_career ||
-        "—";
-
-
-    const match =
-        top?.score ??
-        numberFrom(
-            analysis.match_score ??
-            analysis.score ??
-            analysis.match
-        );
-
-
-    const readiness =
-        numberFrom(
-            analysis.readiness ??
-            analysis.readiness_score ??
-            analysis.job_readiness ??
-            analysis.job_readiness_score
-        );
-
-
-    const gaps =
-        analysis.missing_skills ||
-        analysis.skill_gaps ||
-        analysis.gaps ||
-        analysis.missing ||
-        [];
-
-
-    setText(
-        "topCareer",
-        topTitle
-    );
-
-
-    setText(
-        "matchScore",
-        match !== null
-            ? `${Math.round(match)}%`
-            : "—"
-    );
-
-
-    setText(
-        "readinessScore",
-        readiness !== null
-            ? `${Math.round(readiness)}%`
-            : "—"
-    );
-
-
-    setText(
-        "gapCount",
-        Array.isArray(gaps)
-            ? gaps.length
-            : "—"
-    );
-
-
-    setText(
-        "heroCareer",
-        topTitle !== "—"
-            ? topTitle
-            : "Discover your fit"
-    );
-
-
-    renderCareerResults(
-        normalized
-    );
-
-
-    renderSkillResults(
-        Array.isArray(gaps)
-            ? gaps
-            : []
-    );
-
-
-    renderNextSteps(
-        analysis,
-        topTitle,
-        gaps
-    );
-
-
-    studentProfile.topCareer =
-        topTitle;
-
-
-    studentProfile.lastAnalysis =
-        analysis;
-
-
-    localStorage.setItem(
-        "careerCompassProfile",
-        JSON.stringify(
-            studentProfile
-        )
-    );
-
+  // Tab panels
+  renderCareerResults(careers);
+  renderSkillResults(gaps);
+  renderNextSteps(analysis, topCareer, gaps, steps);
 }
 
 
+/* ============================================================
+   SVG RING ANIMATION
+============================================================ */
+function setRing(circleId, labelId, pct) {
+  const circle = document.getElementById(circleId);
+  const label  = document.getElementById(labelId);
+  if (!circle || !label) return;
 
-/* =========================================================
-   NUMBER HELPER
-   ========================================================= */
+  const radius  = 40;
+  const circumference = 2 * Math.PI * radius; // ≈ 251.3
+  const value   = pct !== null ? Math.min(Math.max(pct, 0), 100) : 0;
+  const offset  = circumference - (value / 100) * circumference;
 
-function numberFrom(value) {
+  circle.style.strokeDasharray  = circumference;
+  circle.style.strokeDashoffset = offset;
+  label.textContent = pct !== null ? Math.round(pct) + '%' : '—';
+}
 
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
-    ) {
-
-        return null;
-
-    }
-
-
-    if (
-        typeof value === "number"
-    ) {
-
-        return value;
-
-    }
-
-
-    const match =
-        String(value)
-            .replace(",", "")
-            .match(
-                /-?\d+(\.\d+)?/
-            );
-
-
-    return match
-        ? Number(match[0])
-        : null;
-
+function animateRings() {
+  if (!lastAnalysis) return;
+  const analysis   = lastAnalysis;
+  const careers    = normaliseList(analysis.career_matches || analysis.career_recommendations || analysis.matches || []);
+  const matchScore = toNum(careers[0]?.score ?? analysis.match_score ?? analysis.score);
+  const readiness  = toNum(analysis.readiness ?? analysis.readiness_score ?? analysis.job_readiness);
+  setRing('ringMatch', 'ringMatchVal', matchScore);
+  setRing('ringReady', 'ringReadyVal', readiness);
 }
 
 
-
-/* =========================================================
-   CAREER NORMALIZER
-   ========================================================= */
-
-function normalizeCareer(
-    career
-) {
-
-    if (
-        typeof career === "string"
-    ) {
-
-        return {
-
-            title: career,
-
-            score: null
-
-        };
-
-    }
-
-
-    return {
-
-        title:
-            career.title ||
-            career.name ||
-            career.role ||
-            career.career,
-
-        score:
-            numberFrom(
-                career.score ??
-                career.match_score ??
-                career.skill_fit_score ??
-                career.match_percentage
-            ),
-
-        category:
-            career.category ||
-            career.domain ||
-            ""
-
-    };
-
-}
-
-
-
-/* =========================================================
+/* ============================================================
    CAREER RESULTS
-   ========================================================= */
-
-function renderCareerResults(
-    careers
-) {
-
-    const box =
-        document.getElementById(
-            "careerResults"
-        );
-
-
-    if (!box) return;
-
-
-    if (!careers.length) {
-
-        box.innerHTML = `
-            <p class="empty-message">
-                No career recommendations were returned yet.
-                Ask CareerBot for a recommendation.
-            </p>
-        `;
-
-        return;
-
-    }
-
-
-    box.innerHTML =
-        careers
-            .slice(0, 5)
-            .map(
-                (career, index) => `
-
-                <div class="result-item">
-
-                    <div>
-
-                        <strong>
-                            #${index + 1}
-                            ${escapeHTML(career.title)}
-                        </strong>
-
-                        ${
-                            career.category
-                                ? `
-                                <div>
-                                    ${escapeHTML(
-                                        career.category
-                                    )}
-                                </div>
-                                `
-                                : ""
-                        }
-
-                    </div>
-
-
-                    <span>
-
-                        ${
-                            career.score !== null
-                                ? `${Number(
-                                    career.score
-                                ).toFixed(1)}%`
-                                : "Recommended"
-                        }
-
-                    </span>
-
-                </div>
-
-            `
-            )
-            .join("");
-
+============================================================ */
+function renderCareerResults(careers) {
+  const box = document.getElementById('careerResults');
+  if (!box) return;
+  if (!careers.length) {
+    box.innerHTML = emptyMsg('🎯', 'No career recommendations returned yet. Ask CareerBot for a recommendation.');
+    return;
+  }
+  box.innerHTML = careers.slice(0, 6).map((c, i) => `
+    <div class="result-item">
+      <div class="result-item-left">
+        <strong>#${i + 1} ${esc(c.title)}</strong>
+        <span>${esc(c.category || 'Career Path')}</span>
+      </div>
+      <span class="result-badge ${i === 0 ? 'badge-blue' : 'badge-purple'}">
+        ${c.score !== null ? Math.round(c.score) + '% match' : 'Recommended'}
+      </span>
+    </div>
+  `).join('');
 }
 
 
-
-/* =========================================================
-   SKILL RESULTS
-   ========================================================= */
-
-function renderSkillResults(
-    gaps
-) {
-
-    const box =
-        document.getElementById(
-            "skillResults"
-        );
-
-
-    if (!box) return;
-
-
-    if (!gaps.length) {
-
-        box.innerHTML = `
-            <p class="empty-message">
-                No explicit skill gaps were returned.
-            </p>
-        `;
-
-        return;
-
-    }
-
-
-    box.innerHTML =
-        gaps
-            .slice(0, 8)
-            .map(
-                gap => {
-
-                    const skill =
-                        typeof gap === "string"
-                            ? gap
-                            : gap.skill ||
-                              gap.name ||
-                              gap.title ||
-                              "Skill";
-
-
-                    return `
-
-                        <div class="result-item">
-
-                            <strong>
-                                ${escapeHTML(skill)}
-                            </strong>
-
-                            <span>
-                                Priority
-                            </span>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
+/* ============================================================
+   SKILL GAP RESULTS
+============================================================ */
+function renderSkillResults(gaps) {
+  const box = document.getElementById('skillResults');
+  if (!box) return;
+  if (!gaps.length) {
+    box.innerHTML = emptyMsg('⚡', 'No explicit skill gaps detected. You may already have a strong foundation!');
+    return;
+  }
+  box.innerHTML = gaps.slice(0, 10).map((g, i) => {
+    const skill = typeof g === 'string' ? g : g.skill || g.name || g.title || 'Skill';
+    const priority = i < 3 ? 'badge-orange' : i < 6 ? 'badge-purple' : 'badge-teal';
+    const label    = i < 3 ? 'High Priority' : i < 6 ? 'Medium' : 'Learn Later';
+    return `
+      <div class="result-item">
+        <div class="result-item-left">
+          <strong>${esc(skill)}</strong>
+          <span>Skill to develop</span>
+        </div>
+        <span class="result-badge ${priority}">${label}</span>
+      </div>
+    `;
+  }).join('');
 }
 
 
-
-/* =========================================================
+/* ============================================================
    NEXT STEPS
-   ========================================================= */
+============================================================ */
+function renderNextSteps(analysis, topCareer, gaps, steps) {
+  const box = document.getElementById('nextSteps');
+  if (!box) return;
 
-function renderNextSteps(
-    analysis,
-    career,
-    gaps
-) {
+  let list = steps.filter(Boolean);
 
-    const box =
-        document.getElementById(
-            "nextSteps"
-        );
-
-
-    if (!box) return;
-
-
-    const source =
-        analysis.next_steps ||
-        analysis.nextSteps ||
-        analysis.actions ||
-        analysis.recommendations;
-
-
-    let steps =
-        Array.isArray(source)
-            ? source
-            : [];
-
-
-    if (!steps.length) {
-
-        steps = [];
-
-
-        if (
-            career &&
-            career !== "—"
-        ) {
-
-            steps.push(
-                `Learn the core skills used in ${career}.`
-            );
-
-        }
-
-
-        if (gaps.length) {
-
-            steps.push(
-                `Prioritize your top ${Math.min(
-                    gaps.length,
-                    3
-                )} skill gaps.`
-            );
-
-        }
-
-
-        steps.push(
-            "Build one practical project and document what you learned."
-        );
-
-
-        steps.push(
-            "Re-check your readiness after completing the next learning milestone."
-        );
-
+  if (!list.length) {
+    if (topCareer && topCareer !== '—') {
+      list.push(`Research the core responsibilities and tools used in ${topCareer}.`);
+      list.push(`Learn the top skills required for ${topCareer}.`);
     }
+    if (gaps.length) list.push(`Focus on your top ${Math.min(gaps.length, 3)} skill gap${gaps.length > 1 ? 's' : ''}: ${gaps.slice(0,3).map(g => typeof g === 'string' ? g : g.skill || g).join(', ')}.`);
+    list.push('Build one hands-on project and document your learnings.');
+    list.push('Check your readiness score again after completing your next learning milestone.');
+    list.push('Use CareerBot to compare alternative career paths.');
+  }
 
-
-    box.innerHTML =
-        steps
-            .slice(0, 5)
-            .map(
-                (step, index) => `
-
-                    <div class="result-item">
-
-                        <strong>
-                            ${index + 1}.
-                        </strong>
-
-                        <span>
-                            ${escapeHTML(
-                                typeof step === "string"
-                                    ? step
-                                    : JSON.stringify(step)
-                            )}
-                        </span>
-
-                    </div>
-
-                `
-            )
-            .join("");
-
+  box.innerHTML = list.slice(0, 6).map((step, i) => `
+    <div class="result-item">
+      <div class="result-item-left">
+        <strong>Step ${i + 1}</strong>
+        <span>${esc(typeof step === 'string' ? step : JSON.stringify(step))}</span>
+      </div>
+      <span class="result-badge badge-blue">${i === 0 ? 'Do First' : 'Action'}</span>
+    </div>
+  `).join('');
 }
 
 
+/* ============================================================
+   TABS
+============================================================ */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = document.getElementById('tab-' + name);
+  if (panel) panel.classList.add('active');
+}
 
-/* =========================================================
+
+/* ============================================================
    CAREER EXPLORER
-   ========================================================= */
+============================================================ */
+let activeFilter = 'All';
 
-function renderCareers(
-    filter = ""
-) {
-
-    const grid =
-        document.getElementById(
-            "careerGrid"
-        );
-
-
-    if (!grid) return;
-
-
-    const query =
-        filter
-            .trim()
-            .toLowerCase();
-
-
-    const list =
-        careerCatalog.filter(
-            career => {
-
-                return (
-                    !query ||
-                    [
-                        career.title,
-                        career.category,
-                        career.description,
-                        ...career.skills
-                    ]
-                        .join(" ")
-                        .toLowerCase()
-                        .includes(query)
-                );
-
-            }
-        );
-
-
-    const count =
-        document.getElementById(
-            "careerCount"
-        );
-
-
-    if (count) {
-
-        count.textContent =
-            `${list.length} career${
-                list.length === 1
-                    ? ""
-                    : "s"
-            }`;
-
-    }
-
-
-    grid.innerHTML =
-        list
-            .map(
-                career => `
-
-                    <article class="career-card">
-
-                        <span class="career-category">
-
-                            ${escapeHTML(
-                                career.category
-                            )}
-
-                        </span>
-
-
-                        <h3>
-                            ${escapeHTML(
-                                career.title
-                            )}
-                        </h3>
-
-
-                        <p>
-                            ${escapeHTML(
-                                career.description
-                            )}
-                        </p>
-
-
-                        <div class="career-skills">
-
-                            ${
-                                career.skills
-                                    .slice(0, 5)
-                                    .map(
-                                        skill => `
-                                            <span class="career-skill">
-                                                ${escapeHTML(
-                                                    skill
-                                                )}
-                                            </span>
-                                        `
-                                    )
-                                    .join("")
-                            }
-
-                        </div>
-
-
-                        <button
-                            class="career-ask"
-                            onclick="openCareerChat('Tell me whether ${escapeJS(
-                                career.title
-                            )} is a good fit for my profile.')">
-
-                            Ask CareerBot about this →
-
-                        </button>
-
-                    </article>
-
-                `
-            )
-            .join("");
-
-
-    if (!list.length) {
-
-        grid.innerHTML = `
-
-            <div class="card">
-
-                <p class="empty-message">
-
-                    No matching career found.
-                    Try another keyword.
-
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
+function buildFilterChips() {
+  const categories = ['All', ...new Set(careerCatalog.map(c => c.category))];
+  const wrap = document.getElementById('filterChips');
+  if (!wrap) return;
+  wrap.innerHTML = categories.map(cat => `
+    <button class="filter-chip ${cat === 'All' ? 'active' : ''}"
+            onclick="setFilter('${esc(cat)}', this)">
+      ${esc(cat)}
+    </button>
+  `).join('');
 }
 
-
-
-function searchCareers() {
-
-    renderCareers(
-        valueOf("careerSearch")
-    );
-
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCareers();
 }
 
+function renderCareers(query = '') {
+  const search  = query || document.getElementById('careerSearch')?.value.trim().toLowerCase() || '';
+  const grid    = document.getElementById('careerGrid');
+  const counter = document.getElementById('careerCount');
+  if (!grid) return;
+
+  const list = careerCatalog.filter(c => {
+    const matchCat = activeFilter === 'All' || c.category === activeFilter;
+    const matchQ   = !search || [c.title, c.category, c.description, ...c.skills]
+                       .join(' ').toLowerCase().includes(search);
+    return matchCat && matchQ;
+  });
+
+  if (counter) counter.textContent = `${list.length} career${list.length !== 1 ? 's' : ''}`;
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="card"><div class="empty-msg"><div class="icon">🔍</div>No careers matched. Try a different search or filter.</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(c => `
+    <article class="career-card">
+      <span class="career-cat">${esc(c.category)}</span>
+      <h3>${esc(c.title)}</h3>
+      <p>${esc(c.description)}</p>
+      <div class="skill-tags">
+        ${c.skills.map(s => `<span class="skill-tag">${esc(s)}</span>`).join('')}
+      </div>
+      <button class="career-ask-btn"
+              onclick="openCareerChat('Tell me if ${escJS(c.title)} is a good fit for my profile.')">
+        Ask CareerBot about this →
+      </button>
+    </article>
+  `).join('');
+}
+
+function searchCareers() { renderCareers(document.getElementById('careerSearch')?.value.trim().toLowerCase()); }
 
 
-/* =========================================================
-   CHATBOT
-   ========================================================= */
+/* ============================================================
+   CHAT BOT
+============================================================ */
+let chatOpen = false;
 
 function toggleChat() {
-
-    const chat =
-        document.getElementById(
-            "chatBox"
-        );
-
-
-    if (!chat) return;
-
-
-    chat.classList.toggle(
-        "open"
-    );
-
-
-    if (
-        chat.classList.contains(
-            "open"
-        )
-    ) {
-
-        document
-            .getElementById(
-                "chatInput"
-            )
-            ?.focus();
-
-    }
-
+  chatOpen = !chatOpen;
+  document.getElementById('chatPanel')?.classList.toggle('open', chatOpen);
+  if (chatOpen) {
+    hideUnreadBadge();
+    document.getElementById('chatInput')?.focus();
+  }
 }
 
-
-
-function openCareerChat(
-    question
-) {
-
-    const chat =
-        document.getElementById(
-            "chatBox"
-        );
-
-
-    if (!chat) return;
-
-
-    chat.classList.add(
-        "open"
-    );
-
-
-    const input =
-        document.getElementById(
-            "chatInput"
-        );
-
-
-    if (input) {
-
-        input.value =
-            question;
-
-    }
-
-
-    sendChatMessage();
-
+function openCareerChat(question) {
+  chatOpen = true;
+  document.getElementById('chatPanel')?.classList.add('open');
+  hideUnreadBadge();
+  const input = document.getElementById('chatInput');
+  if (input) input.value = question;
+  sendChatMessage();
 }
 
-
-
-function handleChatKey(
-    event
-) {
-
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
-
-        event.preventDefault();
-
-        sendChatMessage();
-
-    }
-
+function handleChatKey(event) {
+  if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendChatMessage(); }
 }
 
+function showUnreadBadge() {
+  const badge = document.getElementById('fabBadge');
+  if (badge && !chatOpen) badge.classList.add('show');
+}
 
-
-/* =========================================================
-   SEND CHAT MESSAGE
-   ========================================================= */
+function hideUnreadBadge() {
+  document.getElementById('fabBadge')?.classList.remove('show');
+}
 
 async function sendChatMessage() {
+  if (isBusy) return;
+  const input   = document.getElementById('chatInput');
+  const message = input?.value.trim();
+  if (!message) return;
+  input.value = '';
 
-    if (isBusy) return;
+  addUserMessage(message);
+  addTypingIndicator();
+  setInputLock(true);
+  isBusy = true;
 
+  try {
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: sessionId,
+        message,
+        profile:   collectProfile(),
+        analysis:  lastAnalysis || null
+      })
+    });
 
-    const input =
-        document.getElementById(
-            "chatInput"
-        );
+    const data = await res.json();
 
+    if (!res.ok || data.success === false) throw new Error(data.error || `Server error ${res.status}`);
 
-    const message =
-        input?.value.trim();
-
-
-    if (!message) return;
-
-
-    input.value = "";
-
-
-    addUserMessage(
-        message
-    );
-
-
-    showTypingIndicator();
-
-
-    isBusy = true;
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE_URL}/api/chat`,
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            session_id:
-                                sessionId,
-
-                            message:
-                                message,
-
-                            profile:
-                                collectStudentProfile(),
-
-                            analysis:
-                                studentProfile.lastAnalysis ||
-                                null
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            data.success === false
-        ) {
-
-            throw new Error(
-                data.error ||
-                `Server error ${response.status}`
-            );
-
-        }
-
-
-        sessionId =
-            data.session_id ||
-            sessionId;
-
-
-        if (sessionId) {
-
-            localStorage.setItem(
-                "careerCompassSession",
-                sessionId
-            );
-
-        }
-
-
-        if (data.profile) {
-
-            studentProfile = {
-
-                ...studentProfile,
-
-                ...data.profile
-
-            };
-
-
-            localStorage.setItem(
-                "careerCompassProfile",
-                JSON.stringify(
-                    studentProfile
-                )
-            );
-
-
-            restoreProfileToForm();
-
-        }
-
-
-        removeTypingIndicator();
-
-
-        addBotMessage(
-            data.reply ||
-            data.message ||
-            "I processed your request."
-        );
-
-
-        if (data.analysis) {
-
-            renderAnalysis(
-                data.analysis
-            );
-
-        }
-
+    if (data.session_id) {
+      sessionId = data.session_id;
+      localStorage.setItem('ccSession', sessionId);
     }
 
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-
-        removeTypingIndicator();
-
-
-        addBotMessage(
-            "⚠️ I couldn't reach the Career Compass agent. Please confirm that `python app.py` is running on port 5000."
-        );
-
+    if (data.profile) {
+      studentProfile = { ...studentProfile, ...data.profile };
+      localStorage.setItem('ccProfile', JSON.stringify(studentProfile));
+      restoreFormValues();
     }
-
-
-    finally {
-
-        isBusy = false;
-
-    }
-
-}
-
-
-
-/* =========================================================
-   CHAT MESSAGE HELPERS
-   ========================================================= */
-
-function addUserMessage(
-    message
-) {
-
-    addMessage(
-        "user-message",
-        escapeHTML(message)
-    );
-
-}
-
-
-
-function addBotMessage(
-    message
-) {
-
-    addMessage(
-        "bot-message",
-        formatBotMessage(message)
-    );
-
-}
-
-
-
-function addMessage(
-    className,
-    html
-) {
-
-    const box =
-        document.getElementById(
-            "chatMessages"
-        );
-
-
-    if (!box) return;
-
-
-    const element =
-        document.createElement(
-            "div"
-        );
-
-
-    element.className =
-        `message ${className}`;
-
-
-    element.innerHTML =
-        `
-            <div class="message-content">
-                ${html}
-            </div>
-        `;
-
-
-    box.appendChild(
-        element
-    );
-
-
-    scrollChat();
-
-}
-
-
-
-/* =========================================================
-   FORMAT BOT RESPONSE
-   ========================================================= */
-
-function formatBotMessage(
-    message
-) {
-
-    let text =
-        escapeHTML(
-            message || ""
-        );
-
-
-    text =
-        text.replace(
-            /\*\*(.*?)\*\*/g,
-            "<strong>$1</strong>"
-        );
-
-
-    text =
-        text.replace(
-            /^[-•]\s+(.*)$/gm,
-            "• $1<br>"
-        );
-
-
-    text =
-        text.replace(
-            /^(\d+)\.\s+(.*)$/gm,
-            "<strong>$1.</strong> $2<br>"
-        );
-
-
-    return text.replace(
-        /\n/g,
-        "<br>"
-    );
-
-}
-
-
-
-/* =========================================================
-   TYPING INDICATOR
-   ========================================================= */
-
-function showTypingIndicator() {
 
     removeTypingIndicator();
+    addBotMessage(data.reply || data.message || 'I processed your request.');
 
+    if (data.analysis) {
+      renderDashboard(data.analysis);
+      lastAnalysis = data.analysis;
+      studentProfile.lastAnalysis = data.analysis;
+      localStorage.setItem('ccProfile', JSON.stringify(studentProfile));
+    }
 
-    const box =
-        document.getElementById(
-            "chatMessages"
-        );
-
-
-    if (!box) return;
-
-
-    const element =
-        document.createElement(
-            "div"
-        );
-
-
-    element.id =
-        "careerBotTyping";
-
-
-    element.className =
-        "message bot-message typing-message";
-
-
-    element.innerHTML = `
-
-        <div class="message-content">
-
-            <div class="typing-dots">
-
-                <span class="typing-dot">
-                    ●
-                </span>
-
-                <span class="typing-dot">
-                    ●
-                </span>
-
-                <span class="typing-dot">
-                    ●
-                </span>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    box.appendChild(
-        element
-    );
-
-
-    scrollChat();
-
+  } catch (err) {
+    console.error(err);
+    removeTypingIndicator();
+    addBotMessage('⚠️ I couldn\'t reach the Career Compass agent. Please confirm that `python app.py` is running on port 5000.');
+  } finally {
+    isBusy = false;
+    setInputLock(false);
+  }
 }
 
+/* Message renderers */
+function addUserMessage(text) {
+  const messages = document.getElementById('chatMessages');
+  if (!messages) return;
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-avatar user">👤</div>
+    <div class="msg-bubble">${esc(text)}</div>
+  `;
+  messages.appendChild(div);
+  scrollChat();
+}
 
+function addBotMessage(text) {
+  const messages = document.getElementById('chatMessages');
+  if (!messages) return;
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `
+    <div class="msg-avatar bot">🤖</div>
+    <div class="msg-bubble">${formatBotText(text)}</div>
+  `;
+  messages.appendChild(div);
+  scrollChat();
+  if (!chatOpen) showUnreadBadge();
+}
+
+function addTypingIndicator() {
+  const messages = document.getElementById('chatMessages');
+  if (!messages) return;
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typingMsg';
+  div.innerHTML = `
+    <div class="msg-avatar bot">🤖</div>
+    <div class="msg-bubble" style="padding:8px 14px;">
+      <div class="typing-indicator"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  messages.appendChild(div);
+  scrollChat();
+}
 
 function removeTypingIndicator() {
-
-    document
-        .getElementById(
-            "careerBotTyping"
-        )
-        ?.remove();
-
+  document.getElementById('typingMsg')?.remove();
 }
-
-
 
 function scrollChat() {
+  const messages = document.getElementById('chatMessages');
+  if (messages) messages.scrollTop = messages.scrollHeight;
+}
 
-    const box =
-        document.getElementById(
-            "chatMessages"
-        );
+function setInputLock(locked) {
+  const input = document.getElementById('chatInput');
+  const btn   = document.getElementById('chatSendBtn');
+  if (input) input.disabled = locked;
+  if (btn)   btn.disabled   = locked;
+}
 
-
-    if (!box) return;
-
-
-    setTimeout(
-        () => {
-
-            box.scrollTop =
-                box.scrollHeight;
-
-        },
-        30
-    );
-
+/* Format bot text: convert **bold**, newlines, numbered lists */
+function formatBotText(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>').replace(/$/, '</p>');
 }
 
 
-
-/* =========================================================
-   BACKEND STATUS
-   ========================================================= */
-
-async function checkBackend() {
-
-    const status =
-        document.getElementById(
-            "backendStatus"
-        );
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE_URL}/api/test`,
-                {
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Backend offline"
-            );
-
-        }
-
-
-        if (status) {
-
-            status.textContent =
-                "● Agent online";
-
-
-            status.className =
-                "status-pill online";
-
-        }
-
-    }
-
-
-    catch {
-
-        if (status) {
-
-            status.textContent =
-                "● Backend offline";
-
-
-            status.className =
-                "status-pill offline";
-
-        }
-
-    }
-
+/* ============================================================
+   LOADING OVERLAY
+============================================================ */
+function setLoading(active, title = '', text = '') {
+  const overlay = document.getElementById('loadingOverlay');
+  if (!overlay) return;
+  overlay.classList.toggle('active', active);
+  if (active) {
+    setText('loadingTitle', title);
+    setText('loadingText', text);
+  }
 }
 
 
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-function setLoading(
-    show,
-    title,
-    text
-) {
-
-    const element =
-        document.getElementById(
-            "loading"
-        );
-
-
-    if (!element) return;
-
-
-    element.classList.toggle(
-        "show",
-        show
-    );
-
-
-    if (title) {
-
-        setText(
-            "loadingTitle",
-            title
-        );
-
-    }
-
-
-    if (text) {
-
-        setText(
-            "loadingText",
-            text
-        );
-
-    }
-
+/* ============================================================
+   TOAST NOTIFICATIONS
+============================================================ */
+function showToast(msg, type = 'info', duration = 3000) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('hide');
+    setTimeout(() => toast.remove(), 350);
+  }, duration);
 }
 
 
-
-/* =========================================================
-   TEXT HELPER
-   ========================================================= */
-
-function setText(
-    id,
-    value
-) {
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    if (element) {
-
-        element.textContent =
-            value;
-
-    }
-
+/* ============================================================
+   UTILITY HELPERS
+============================================================ */
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
 }
 
-
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-function showToast(
-    message
-) {
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    if (!toast) return;
-
-
-    toast.textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        window.__toast
-    );
-
-
-    window.__toast =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2600
-        );
-
+function esc(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
-
-
-/* =========================================================
-   SECURITY HELPERS
-   ========================================================= */
-
-function escapeHTML(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+function escJS(str) {
+  return String(str || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
 
-
-
-function escapeJS(
-    value
-) {
-
-    return String(value)
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        );
-
+function emptyMsg(icon, text) {
+  return `<div class="empty-msg"><div class="icon">${icon}</div>${esc(text)}</div>`;
 }
 
+function toNum(val) {
+  if (val === null || val === undefined || val === '') return null;
+  if (typeof val === 'number') return val;
+  const m = String(val).replace(',', '').match(/-?\d+(\.\d+)?/);
+  return m ? Number(m[0]) : null;
+}
 
+function normaliseList(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.map(item => {
+    if (typeof item === 'string') return { title: item, score: null, category: '' };
+    return {
+      title:    item.title || item.name || item.role || item.career || '',
+      score:    toNum(item.score ?? item.match_score ?? item.skill_fit_score ?? item.match_percentage),
+      category: item.category || item.domain || ''
+    };
+  }).filter(c => c.title);
+}
 
-/* =========================================================
-   CARD ANIMATION
-   ========================================================= */
-
-function observeCards() {
-
-    document
-        .querySelectorAll(
-            ".reveal-card"
-        )
-        .forEach(
-            (element, index) => {
-
-                element.style.animationDelay =
-                    `${index * 80}ms`;
-
-            }
-        );
-
+function asList(val) {
+  if (Array.isArray(val)) return val;
+  if (typeof val === 'string' && val) return [val];
+  return [];
 }

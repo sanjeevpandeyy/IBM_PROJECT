@@ -10,12 +10,12 @@ from memory import memory_store
 from planner import AgentPlanner
 from llm import LocalGranite
 
-from tools.career_tool import CareerTool
-from tools.skill_tool import SkillTool
-from tools.roadmap_tool import RoadmapTool
-from tools.project_tool import ProjectTool
-from tools.learning_tool import LearningTool
-from tools.market_tool import MarketTool
+from Tools.career_tool import CareerTool
+from Tools.skill_tool import SkillTool
+from Tools.roadmap_tool import RoadmapTool
+from Tools.project_tool import ProjectTool
+from Tools.learning_tool import LearningTool
+from Tools.market_tool import MarketTool
 
 
 class CareerCompanionAgent:

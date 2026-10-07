@@ -20,12 +20,17 @@ class CareerAgent:
             os.path.abspath(__file__)
         )
 
-        # Support both layouts:
-        # 1) project/backend/agent.py + project/knowledge_base/
-        # 2) project/agent.py + project/knowledge_base/
+        # Support both layouts and case variants (macOS is case-sensitive):
+        # 1) project/Backend/agent.py + project/Knowledge_Base/
+        # 2) project/backend/agent.py + project/knowledge_base/
+        # 3) project/agent.py + project/knowledge_base/
+        _parent = os.path.dirname(self.backend_directory)
         candidate_directories = [
             os.path.join(self.backend_directory, "knowledge_base"),
-            os.path.join(os.path.dirname(self.backend_directory), "knowledge_base"),
+            os.path.join(self.backend_directory, "Knowledge_Base"),
+            os.path.join(_parent, "knowledge_base"),
+            os.path.join(_parent, "Knowledge_Base"),
+            os.path.join(_parent, "knowledge base"),
         ]
 
         self.knowledge_base_directory = next(

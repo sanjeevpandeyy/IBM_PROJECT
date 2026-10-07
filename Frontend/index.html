@@ -1,1150 +1,644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#6559e5">
-
-    <title>Career Compass | Agentic Career Counseling Companion</title>
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f62fe">
+  <meta name="description" content="Career Compass — Agentic AI Career Counseling Companion powered by IBM Granite">
+  <title>Career Compass | Agentic Career Counseling Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <!-- Background Effects -->
-    <div class="ambient ambient-one"></div>
-    <div class="ambient ambient-two"></div>
-    <div id="particles" class="particles"></div>
-
-
-    <!-- ================= NAVBAR ================= -->
-
-    <header class="navbar">
-
-        <div class="logo" onclick="showSection('home')">
-
-            <div class="logo-icon">🧭</div>
-
-            <div>
-                <h1>Career Compass</h1>
-                <p>Agentic Career Counseling Companion</p>
-            </div>
-
-        </div>
-
-
-        <nav class="nav-buttons">
-
-            <button class="nav-link active"
-                    data-section="home"
-                    onclick="showSection('home')">
-                Home
-            </button>
-
-            <button class="nav-link"
-                    data-section="profile"
-                    onclick="showSection('profile')">
-                My Profile
-            </button>
-
-            <button class="nav-link"
-                    data-section="careers"
-                    onclick="showSection('careers')">
-                Careers
-            </button>
-
-            <button class="nav-link"
-                    data-section="about"
-                    onclick="showSection('about')">
-                About
-            </button>
-
-        </nav>
-
-
-        <div class="nav-actions">
-
-            <span id="backendStatus"
-                  class="status-pill offline">
-                ● Checking...
-            </span>
-
-            <!-- DARK MODE -->
-            <button id="themeToggle"
-                    class="theme-toggle"
-                    onclick="toggleTheme()"
-                    aria-label="Toggle dark mode"
-                    title="Toggle dark mode">
-                🌙
-            </button>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- ================= MAIN ================= -->
-
-    <main>
-
-
-        <!-- ================= HOME ================= -->
-
-        <section id="home" class="section active">
-
-            <div class="hero">
-
-                <div class="hero-glow"></div>
-
-
-                <div class="hero-text">
-
-                    <span class="badge">
-                        ✦ PERSONALIZED CAREER GUIDANCE
-                    </span>
-
-
-                    <p id="welcomeLine"
-                       class="welcome-line">
-                        Welcome to Career Compass 👋
-                    </p>
-
-
-                    <h2>
-                        Your career.<br>
-                        <span>Your direction.</span><br>
-                        Your future.
-                    </h2>
-
-
-                    <p class="hero-description">
-                        Turn your skills, interests and academic profile
-                        into a clear career direction, skill-gap plan
-                        and practical next steps.
-                    </p>
-
-
-                    <div class="hero-buttons">
-
-                        <button class="primary-button"
-                                onclick="showSection('profile')">
-
-                            Start My Career Analysis
-                            <span>→</span>
-
-                        </button>
-
-
-                        <button class="secondary-button hero-secondary"
-                                onclick="showSection('careers')">
-
-                            Explore Careers
-
-                        </button>
-
-                    </div>
-
-
-                    <div class="hero-stats">
-
-                        <div>
-                            <strong id="careerStat">6+</strong>
-                            <span>Career paths</span>
-                        </div>
-
-                        <div>
-                            <strong id="skillStat">20+</strong>
-                            <span>Skill signals</span>
-                        </div>
-
-                        <div>
-                            <strong>24/7</strong>
-                            <span>Guidance</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- HERO VISUAL -->
-
-                <div class="hero-visual">
-
-                    <div class="orbit orbit-a"></div>
-                    <div class="orbit orbit-b"></div>
-
-
-                    <div class="floating-chip chip-one">
-                        📊 Data
-                    </div>
-
-                    <div class="floating-chip chip-two">
-                        💡 Skills
-                    </div>
-
-                    <div class="floating-chip chip-three">
-                        🚀 Growth
-                    </div>
-
-
-                    <div class="compass-card">
-
-                        <div class="compass-ring">
-                            <div class="big-compass">
-                                🧭
-                            </div>
-                        </div>
-
-                        <span class="mini-label">
-                            YOUR NEXT DIRECTION
-                        </span>
-
-                        <h3 id="heroCareer">
-                            Discover your fit
-                        </h3>
-
-                        <p>
-                            Build a path that grows with you.
-                        </p>
-
-                        <div class="pulse-line">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- FEATURES -->
-
-            <div class="section-title">
-
-                <span>WHAT WE DO</span>
-
-                <h2>
-                    From confusion to clarity.
-                </h2>
-
-                <p>
-                    One companion for the decisions that shape your career.
-                </p>
-
-            </div>
-
-
-            <div class="feature-grid">
-
-
-                <div class="feature-card reveal-card">
-
-                    <div class="feature-icon">
-                        🎯
-                    </div>
-
-                    <h3>
-                        Career Matching
-                    </h3>
-
-                    <p>
-                        Discover directions that align with your skills,
-                        interests and academic background.
-                    </p>
-
-                    <span class="card-arrow">
-                        ↗
-                    </span>
-
-                </div>
-
-
-
-                <div class="feature-card reveal-card">
-
-                    <div class="feature-icon">
-                        ⚡
-                    </div>
-
-                    <h3>
-                        Skill Gap Analysis
-                    </h3>
-
-                    <p>
-                        See what you already know and which capabilities
-                        can move you closer to your goal.
-                    </p>
-
-                    <span class="card-arrow">
-                        ↗
-                    </span>
-
-                </div>
-
-
-
-                <div class="feature-card reveal-card">
-
-                    <div class="feature-icon">
-                        🗺️
-                    </div>
-
-                    <h3>
-                        Career Roadmap
-                    </h3>
-
-                    <p>
-                        Turn a career choice into practical learning,
-                        project and readiness steps.
-                    </p>
-
-                    <span class="card-arrow">
-                        ↗
-                    </span>
-
-                </div>
-
-
-
-                <div class="feature-card reveal-card">
-
-                    <div class="feature-icon">
-                        📊
-                    </div>
-
-                    <h3>
-                        Job Readiness
-                    </h3>
-
-                    <p>
-                        Understand your current position and focus
-                        on the areas that matter most.
-                    </p>
-
-                    <span class="card-arrow">
-                        ↗
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= PROFILE ================= -->
-
-        <section id="profile" class="section">
-
-            <div class="page-heading">
-
-                <span>STEP 01</span>
-
-                <h2>
-                    Tell us about yourself
-                </h2>
-
-                <p>
-                    The more useful context you provide,
-                    the more meaningful your career guidance becomes.
-                </p>
-
-            </div>
-
-
-
-            <div class="profile-container">
-
-
-                <!-- BASIC INFORMATION -->
-
-                <div class="card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                👤 Basic Information
-                            </h3>
-
-                            <p>
-                                Your academic and career context.
-                            </p>
-
-                        </div>
-
-                        <span class="step-badge">
-                            01
-                        </span>
-
-                    </div>
-
-
-
-                    <div class="form-grid">
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Your Name
-                            </label>
-
-                            <input
-                                type="text"
-                                id="name"
-                                placeholder="Enter your name">
-
-                        </div>
-
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Degree
-                            </label>
-
-                            <input
-                                type="text"
-                                id="degree"
-                                placeholder="e.g. B.Tech Data Science">
-
-                        </div>
-
-
-
-                        <div class="form-group">
-
-                            <label>
-                                CGPA
-                            </label>
-
-                            <input
-                                type="number"
-                                id="cgpa"
-                                min="0"
-                                max="10"
-                                step="0.01"
-                                placeholder="e.g. 8.2">
-
-                        </div>
-
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Target Career
-                            </label>
-
-                            <input
-                                type="text"
-                                id="targetRole"
-                                placeholder="e.g. Data Analyst">
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Interests
-                        </label>
-
-                        <input
-                            type="text"
-                            id="interests"
-                            placeholder="e.g. Data Analytics, Visualization, Business">
-
-                    </div>
-
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Projects
-                        </label>
-
-                        <textarea
-                            id="projects"
-                            placeholder="Describe projects you have completed..."></textarea>
-
-                    </div>
-
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Experience
-                        </label>
-
-                        <textarea
-                            id="experience"
-                            placeholder="Internships, volunteering, leadership, hackathons, etc."></textarea>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- SKILLS -->
-
-                <div class="card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                ⚡ Your Skills
-                            </h3>
-
-                            <p>
-                                Select the skills you currently know.
-                            </p>
-
-                        </div>
-
-
-                        <div class="skill-counter">
-
-                            <strong id="skillCount">
-                                0
-                            </strong>
-
-                            selected
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="skillsContainer"
-                         class="skills-container">
-                    </div>
-
-
-                    <div class="custom-skill-row">
-
-                        <input
-                            id="customSkill"
-                            type="text"
-                            placeholder="Add another skill and press Enter">
-
-                        <button
-                            class="small-button"
-                            onclick="addCustomSkill()">
-
-                            Add
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ANALYZE -->
-
-                <button
-                    class="analyze-button"
-                    onclick="analyzeProfile()">
-
-                    🚀 Analyze My Career Profile
-                    <span>→</span>
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= RESULTS ================= -->
-
-        <section id="results" class="section">
-
-            <div class="page-heading">
-
-                <span>
-                    YOUR ANALYSIS
-                </span>
-
-                <h2>
-                    Career Intelligence Dashboard
-                </h2>
-
-                <p id="resultsGreeting">
-                    Your personalized career snapshot.
-                </p>
-
-            </div>
-
-
-
-            <div class="result-grid">
-
-
-                <div class="result-card">
-
-                    <span>
-                        TOP CAREER
-                    </span>
-
-                    <h3 id="topCareer">
-                        —
-                    </h3>
-
-                    <p>
-                        Recommended career direction
-                    </p>
-
-                </div>
-
-
-
-                <div class="result-card">
-
-                    <span>
-                        MATCH SCORE
-                    </span>
-
-                    <h3 id="matchScore">
-                        —
-                    </h3>
-
-                    <p>
-                        Career compatibility
-                    </p>
-
-                </div>
-
-
-
-                <div class="result-card">
-
-                    <span>
-                        JOB READINESS
-                    </span>
-
-                    <h3 id="readinessScore">
-                        —
-                    </h3>
-
-                    <p>
-                        Current readiness
-                    </p>
-
-                </div>
-
-
-
-                <div class="result-card">
-
-                    <span>
-                        SKILL GAPS
-                    </span>
-
-                    <h3 id="gapCount">
-                        —
-                    </h3>
-
-                    <p>
-                        Skills to improve
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="results-content">
-
-
-                <div class="card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                🎯 Recommended Careers
-                            </h3>
-
-                            <p>
-                                Your strongest directions.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="careerResults">
-
-                        <p class="empty-message">
-                            Your career recommendations will appear here.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                ⚡ Skills To Improve
-                            </h3>
-
-                            <p>
-                                Priorities for your next stage.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="skillResults">
-
-                        <p class="empty-message">
-                            Your skill gaps will appear here.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <div class="card-heading">
-
-                        <div>
-
-                            <h3>
-                                🗺️ Next Steps
-                            </h3>
-
-                            <p>
-                                Simple actions you can take now.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="nextSteps">
-
-                        <p class="empty-message">
-                            Your personalized next steps will appear here.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="result-actions">
-
-                <button
-                    class="secondary-button"
-                    onclick="showSection('profile')">
-
-                    ← Edit My Profile
-
-                </button>
-
-
-                <button
-                    class="primary-button compact-button"
-                    onclick="openCareerChat('What should I do next based on my career analysis?')">
-
-                    Ask CareerBot →
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= CAREERS ================= -->
-
-        <section id="careers" class="section">
-
-            <div class="page-heading">
-
-                <span>
-                    CAREER EXPLORER
-                </span>
-
-                <h2>
-                    Explore Career Paths
-                </h2>
-
-                <p>
-                    Search the project's career knowledge base
-                    and explore the directions that interest you.
-                </p>
-
-            </div>
-
-
-
-            <div class="explorer-toolbar">
-
-                <div class="search-box">
-
-                    <span>
-                        ⌕
-                    </span>
-
-                    <input
-                        type="text"
-                        id="careerSearch"
-                        placeholder="Search careers, skills or domains..."
-                        oninput="searchCareers()">
-
-                </div>
-
-
-                <div
-                    id="careerCount"
-                    class="count-badge">
-
-                    0 careers
-
-                </div>
-
-            </div>
-
-
-
-            <div
-                id="careerGrid"
-                class="career-grid">
-            </div>
-
-        </section>
-
-
-
-        <!-- ================= ABOUT ================= -->
-
-        <section id="about" class="section">
-
-            <div class="page-heading">
-
-                <span>
-                    ABOUT THE PROJECT
-                </span>
-
-                <h2>
-                    Career Compass
-                </h2>
-
-                <p>
-                    An agentic career counseling companion designed
-                    to help students make informed career decisions.
-                </p>
-
-            </div>
-
-
-
-            <div class="about-grid">
-
-
-                <div class="card">
-
-                    <div class="feature-icon">
-                        🤖
-                    </div>
-
-                    <h3>
-                        Agentic Career Companion
-                    </h3>
-
-                    <p>
-                        The companion interprets requests,
-                        uses profile context and chooses the relevant
-                        career tools before responding.
-                    </p>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <div class="feature-icon">
-                        📚
-                    </div>
-
-                    <h3>
-                        Knowledge-Based Guidance
-                    </h3>
-
-                    <p>
-                        Career roles, skills, learning resources
-                        and market information are organized inside
-                        the project's knowledge base.
-                    </p>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <div class="feature-icon">
-                        🔄
-                    </div>
-
-                    <h3>
-                        Continuous Guidance
-                    </h3>
-
-                    <p>
-                        Follow-up questions can cover careers,
-                        comparisons, skills, learning, projects,
-                        roadmaps and job readiness.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="tech-strip">
-
-                <span>Flask</span>
-                <span>Python</span>
-                <span>Career Tools</span>
-                <span>Knowledge Base</span>
-                <span>Local / Optional Granite</span>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- ================= CAREER BOT BUTTON ================= -->
-
-    <button
-        id="botButton"
-        class="bot-button"
-        onclick="toggleChat()"
-        aria-label="Open CareerBot">
-
-        <span>
-            🤖
-        </span>
-
-        <i></i>
-
-    </button>
-
-
-
-    <!-- ================= CHATBOX ================= -->
-
-    <div
-        id="chatBox"
-        class="chat-box"
-        aria-label="CareerBot">
-
-
-        <div class="chat-header">
-
-            <div class="bot-identity">
-
-                <div class="bot-avatar">
-                    🤖
-                </div>
-
-                <div>
-
-                    <strong>
-                        CareerBot
-                    </strong>
-
-                    <small>
-                        <span class="online-dot"></span>
-                        Career Compass Companion
-                    </small>
-
-                </div>
-
-            </div>
-
-
-            <button
-                onclick="toggleChat()"
-                aria-label="Close chat">
-
-                ×
-
-            </button>
-
-        </div>
-
-
-
-        <div
-            id="chatMessages"
-            class="chat-messages">
-
-            <div class="message bot-message">
-
-                <div class="message-content">
-
-                    Hi! 👋 I'm CareerBot.
-
-                    <br><br>
-
-                    I can help you explore careers,
-                    compare roles, find skill gaps,
-                    plan learning and check job readiness.
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="quick-prompts">
-
-            <button
-                onclick="openCareerChat('Which career should I choose?')">
-
-                Career choice
-
-            </button>
-
-
-            <button
-                onclick="openCareerChat('What skills am I missing?')">
-
-                Skill gaps
-
-            </button>
-
-
-            <button
-                onclick="openCareerChat('What should I learn first?')">
-
-                Learn first
-
-            </button>
-
-        </div>
-
-
-
-        <div class="chat-input">
-
-            <input
-                type="text"
-                id="chatInput"
-                placeholder="Ask CareerBot..."
-                onkeydown="handleChatKey(event)">
-
-
-            <button
-                onclick="sendChatMessage()"
-                aria-label="Send message">
-
-                ➤
-
-            </button>
-
-        </div>
-
+  <!-- Ambient Background -->
+  <div class="ambient-layer">
+    <div class="ambient-blob ambient-blob-1"></div>
+    <div class="ambient-blob ambient-blob-2"></div>
+    <div class="ambient-blob ambient-blob-3"></div>
+  </div>
+  <div class="particles" id="particles"></div>
+
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar" id="navbar">
+
+    <div class="logo" onclick="showSection('home')">
+      <div class="logo-icon">🧭</div>
+      <div class="logo-text">
+        <h1>Career Compass</h1>
+        <span>Agentic Career Counseling Companion</span>
+      </div>
     </div>
 
+    <nav class="nav-links" id="navLinks">
+      <button class="nav-btn active" data-section="home"    onclick="showSection('home')">Home</button>
+      <button class="nav-btn"        data-section="profile" onclick="showSection('profile')">My Profile</button>
+      <button class="nav-btn"        data-section="results" onclick="showSection('results')">Dashboard</button>
+      <button class="nav-btn"        data-section="careers" onclick="showSection('careers')">Explore Careers</button>
+      <button class="nav-btn"        data-section="about"   onclick="showSection('about')">About</button>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="status-badge offline" id="statusBadge">
+        <span class="status-dot"></span>
+        <span id="statusText">Checking…</span>
+      </div>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </header>
 
 
-    <!-- ================= LOADING ================= -->
+  <!-- ==================== MAIN ==================== -->
+  <main>
 
-    <div
-        id="loading"
-        class="loading">
 
-        <div class="loader-box">
+    <!-- ================== HOME ================== -->
+    <section id="home" class="section active">
 
-            <div class="loader-ring">
+      <!-- HERO -->
+      <div class="hero">
 
-                <div class="loader"></div>
+        <div class="hero-text">
 
+          <div class="hero-badge">
+            <span class="dot"></span>
+            POWERED BY AGENTIC AI · IBM GRANITE
+          </div>
+
+          <p class="welcome-line" id="welcomeLine">Welcome to Career Compass 👋</p>
+
+          <h2>
+            Your career.<br>
+            <span class="hero-accent">Your direction.</span><br>
+            Your future.
+          </h2>
+
+          <p class="hero-sub">
+            Turn your skills, interests and academic profile into a personalised
+            career roadmap, skill‑gap plan and practical next steps — powered by an
+            intelligent agentic companion.
+          </p>
+
+          <div class="hero-ctas">
+            <button class="btn-primary" onclick="showSection('profile')">
+              Start Career Analysis <span class="arrow">→</span>
+            </button>
+            <button class="btn-ghost" onclick="showSection('careers')">
+              Explore Careers
+            </button>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stats-item">
+              <strong id="statCareers">0</strong>
+              <span>Career paths</span>
             </div>
-
-            <h3 id="loadingTitle">
-                Analyzing your career profile...
-            </h3>
-
-            <p id="loadingText">
-                Career Compass is evaluating your skills,
-                interests and career possibilities.
-            </p>
-
-            <div class="loading-dots">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
+            <div class="hero-stats-item">
+              <strong id="statSkills">0</strong>
+              <span>Skill signals</span>
             </div>
+            <div class="hero-stats-item">
+              <strong>24/7</strong>
+              <span>Guidance</span>
+            </div>
+          </div>
 
         </div>
 
+        <!-- Hero visual -->
+        <div class="hero-visual">
+
+          <div class="orbit orbit-a"></div>
+          <div class="orbit orbit-b"></div>
+
+          <div class="floating-chips">
+            <div class="chip chip-1">📊 Data Analytics</div>
+            <div class="chip chip-2">💡 Skill Gap</div>
+            <div class="chip chip-3">🚀 Career Ready</div>
+          </div>
+
+          <div class="compass-card">
+            <div class="compass-emoji">🧭</div>
+            <div class="label">YOUR NEXT DIRECTION</div>
+            <h3 id="heroCareer">Discover your fit</h3>
+            <p>Build a path that grows with you.</p>
+            <div class="pulse-bars">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FEATURES -->
+      <div class="features-section">
+
+        <div class="page-heading reveal">
+          <div class="eyebrow">What We Do</div>
+          <h2>From confusion to <span class="gradient-text">clarity</span></h2>
+          <p>One companion for all the career decisions that shape your future.</p>
+        </div>
+
+        <div class="feature-grid">
+
+          <div class="feature-card reveal">
+            <div class="feature-icon-wrap blue">🎯</div>
+            <h3>Career Matching</h3>
+            <p>Discover directions that align with your skills, interests and academic background with scored recommendations.</p>
+            <span class="feature-arrow">↗</span>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon-wrap purple">⚡</div>
+            <h3>Skill Gap Analysis</h3>
+            <p>See exactly what you already know and which capabilities will move you closer to your target career.</p>
+            <span class="feature-arrow">↗</span>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon-wrap teal">🗺️</div>
+            <h3>Career Roadmaps</h3>
+            <p>Turn a career choice into a structured learning, project and readiness plan with clear milestones.</p>
+            <span class="feature-arrow">↗</span>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon-wrap orange">📈</div>
+            <h3>Job Readiness Score</h3>
+            <p>Understand your current position and focus on the areas that matter most for landing the role.</p>
+            <span class="feature-arrow">↗</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- HOW IT WORKS -->
+      <div class="features-section">
+
+        <div class="page-heading reveal">
+          <div class="eyebrow">How It Works</div>
+          <h2>Three steps to your <span class="gradient-text">career compass</span></h2>
+          <p>The agentic system reasons, plans and personalises — so you get guidance that actually fits.</p>
+        </div>
+
+        <div class="steps-grid">
+
+          <div class="step-card reveal">
+            <div class="step-num">1</div>
+            <h3>Build Your Profile</h3>
+            <p>Share your academic background, skills, interests, projects and career goals. The more context you provide, the richer your guidance.</p>
+          </div>
+
+          <div class="step-card reveal">
+            <div class="step-num">2</div>
+            <h3>AI Analyses Your Fit</h3>
+            <p>The Career Compass agent evaluates your profile against its knowledge base, identifies career matches and pinpoints skill gaps.</p>
+          </div>
+
+          <div class="step-card reveal">
+            <div class="step-num">3</div>
+            <h3>Get Personalised Guidance</h3>
+            <p>Receive a scored career dashboard, roadmap and actionable next steps. Continue the conversation with CareerBot for deeper dives.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================== PROFILE ================== -->
+    <section id="profile" class="section">
+
+      <div class="page-heading">
+        <div class="eyebrow">Step 01</div>
+        <h2>Tell us about <span class="gradient-text">yourself</span></h2>
+        <p>The more context you share, the more personalised your career guidance becomes.</p>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-bar-wrap reveal" style="margin-bottom:24px;">
+        <div class="step-indicator active">
+          <div class="step-circle">1</div>
+          <span>Basic Info</span>
+        </div>
+        <div class="step-indicator">
+          <div class="step-circle">2</div>
+          <span>Skills</span>
+        </div>
+        <div class="step-indicator">
+          <div class="step-circle">3</div>
+          <span>Analyse</span>
+        </div>
+      </div>
+
+      <div class="profile-container">
+
+        <!-- Basic Information -->
+        <div class="card reveal">
+          <div class="card-header">
+            <div class="card-header-left">
+              <h3>👤 Basic Information</h3>
+              <p>Your academic and career context</p>
+            </div>
+            <div class="card-badge">01</div>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" placeholder="e.g. Priya Sharma" autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label for="degree">Degree / Programme</label>
+              <input type="text" id="degree" placeholder="e.g. B.Tech Data Science">
+            </div>
+
+            <div class="form-group">
+              <label for="cgpa">CGPA</label>
+              <input type="number" id="cgpa" min="0" max="10" step="0.01" placeholder="e.g. 8.2">
+            </div>
+
+            <div class="form-group">
+              <label for="targetRole">Target Career</label>
+              <input type="text" id="targetRole" placeholder="e.g. Data Analyst">
+            </div>
+
+            <div class="form-group full">
+              <label for="interests">Interests <span style="color:var(--muted);font-weight:400">(comma separated)</span></label>
+              <input type="text" id="interests" placeholder="e.g. Data Analytics, Machine Learning, Business">
+            </div>
+
+            <div class="form-group full">
+              <label for="projects">Projects</label>
+              <textarea id="projects" placeholder="Describe projects you have completed — tools used, outcomes…"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="experience">Experience</label>
+              <textarea id="experience" placeholder="Internships, volunteering, leadership roles, hackathons…"></textarea>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- Skills -->
+        <div class="card reveal">
+          <div class="card-header">
+            <div class="card-header-left">
+              <h3>⚡ Your Skills</h3>
+              <p>Select everything you currently know</p>
+            </div>
+            <div class="skill-counter">
+              <strong id="skillCount">0</strong> selected
+            </div>
+          </div>
+
+          <div class="skills-grid" id="skillsContainer"></div>
+
+          <div class="custom-skill-row">
+            <div class="form-group" style="flex:1;margin:0">
+              <input type="text" id="customSkill" placeholder="Add a custom skill and press Enter…">
+            </div>
+            <button class="btn-outline btn-sm" onclick="addCustomSkill()">+ Add</button>
+          </div>
+        </div>
+
+
+        <!-- Analyse button -->
+        <button class="analyze-btn reveal" id="analyzeBtn" onclick="analyzeProfile()">
+          🚀 Analyse My Career Profile <span>→</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================== RESULTS ================== -->
+    <section id="results" class="section">
+
+      <div class="page-heading">
+        <div class="eyebrow">Your Analysis</div>
+        <h2>Career Intelligence <span class="gradient-text">Dashboard</span></h2>
+        <p id="resultsGreeting">Your personalised career snapshot.</p>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="result-kpi-grid" id="kpiGrid">
+        <div class="kpi-card kpi-career">
+          <div class="kpi-label">Top Career</div>
+          <div class="kpi-value" id="kpiCareer">—</div>
+          <div class="kpi-sub">Best matched direction</div>
+        </div>
+        <div class="kpi-card kpi-match">
+          <div class="kpi-label">Match Score</div>
+          <div class="kpi-value" id="kpiMatch">—</div>
+          <div class="kpi-sub">Career compatibility</div>
+        </div>
+        <div class="kpi-card kpi-ready">
+          <div class="kpi-label">Job Readiness</div>
+          <div class="kpi-value" id="kpiReady">—</div>
+          <div class="kpi-sub">Current readiness level</div>
+        </div>
+        <div class="kpi-card kpi-gaps">
+          <div class="kpi-label">Skill Gaps</div>
+          <div class="kpi-value" id="kpiGaps">—</div>
+          <div class="kpi-sub">Skills to develop</div>
+        </div>
+      </div>
+
+      <!-- Score Rings -->
+      <div class="rings-row" id="ringsRow">
+
+        <div class="ring-card">
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 100 100">
+              <circle class="ring-track" cx="50" cy="50" r="40"/>
+              <circle class="ring-fill blue" id="ringMatch" cx="50" cy="50" r="40"
+                stroke-dasharray="251.3" stroke-dashoffset="251.3" transform="rotate(-90 50 50)"/>
+            </svg>
+            <div class="ring-center">
+              <strong id="ringMatchVal">0%</strong>
+              <span>Match</span>
+            </div>
+          </div>
+          <div class="ring-info">
+            <h4>Career Match Score</h4>
+            <p>How well your current skills and interests align with your recommended career path.</p>
+          </div>
+        </div>
+
+        <div class="ring-card">
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 100 100">
+              <circle class="ring-track" cx="50" cy="50" r="40"/>
+              <circle class="ring-fill teal" id="ringReady" cx="50" cy="50" r="40"
+                stroke-dasharray="251.3" stroke-dashoffset="251.3" transform="rotate(-90 50 50)"/>
+            </svg>
+            <div class="ring-center">
+              <strong id="ringReadyVal">0%</strong>
+              <span>Ready</span>
+            </div>
+          </div>
+          <div class="ring-info">
+            <h4>Job Readiness Score</h4>
+            <p>An indicative measure of your current readiness for your target role, based on skills, projects and experience.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tabbed Results -->
+      <div class="card reveal">
+
+        <div class="tabs-header">
+          <button class="tab-btn active" onclick="switchTab('careers', this)">🎯 Recommended Careers</button>
+          <button class="tab-btn" onclick="switchTab('skills', this)">⚡ Skill Gaps</button>
+          <button class="tab-btn" onclick="switchTab('nextsteps', this)">🗺️ Next Steps</button>
+        </div>
+
+        <div id="tab-careers" class="tab-panel active">
+          <div id="careerResults">
+            <div class="empty-msg">
+              <div class="icon">🎯</div>
+              Career recommendations will appear here after your analysis.
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-skills" class="tab-panel">
+          <div id="skillResults">
+            <div class="empty-msg">
+              <div class="icon">⚡</div>
+              Skill gap analysis will appear here after your analysis.
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-nextsteps" class="tab-panel">
+          <div id="nextSteps">
+            <div class="empty-msg">
+              <div class="icon">🗺️</div>
+              Your personalised next steps will appear here after your analysis.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-outline" onclick="showSection('profile')">← Edit My Profile</button>
+        <button class="btn-primary" onclick="openCareerChat('What should I do next based on my career analysis?')">
+          Ask CareerBot <span class="arrow">→</span>
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- ================== CAREERS EXPLORER ================== -->
+    <section id="careers" class="section">
+
+      <div class="page-heading">
+        <div class="eyebrow">Career Explorer</div>
+        <h2>Explore <span class="gradient-text">Career Paths</span></h2>
+        <p>Search the knowledge base and explore career directions that interest you.</p>
+      </div>
+
+      <div class="explorer-bar">
+
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="careerSearch" placeholder="Search careers, skills or domains…" oninput="searchCareers()">
+        </div>
+
+        <div class="filter-chips" id="filterChips"></div>
+
+        <div class="count-pill" id="careerCount">0 careers</div>
+
+      </div>
+
+      <div class="career-grid" id="careerGrid"></div>
+
+    </section>
+
+
+    <!-- ================== ABOUT ================== -->
+    <section id="about" class="section">
+
+      <div class="page-heading">
+        <div class="eyebrow">About the Project</div>
+        <h2>Career <span class="gradient-text">Compass</span></h2>
+        <p>An agentic career counseling companion designed to help students make informed career decisions.</p>
+      </div>
+
+      <div class="about-grid">
+
+        <div class="about-card reveal">
+          <div class="about-icon">🤖</div>
+          <h3>Agentic Companion</h3>
+          <p>The agent interprets your requests, uses profile context and selects the most relevant career tool before responding — not just a chatbot.</p>
+        </div>
+
+        <div class="about-card reveal">
+          <div class="about-icon">📚</div>
+          <h3>Knowledge-Driven</h3>
+          <p>Career roles, required skills, learning resources and job-market signals are structured in a rich knowledge base for consistent guidance.</p>
+        </div>
+
+        <div class="about-card reveal">
+          <div class="about-icon">🔄</div>
+          <h3>Continuous Guidance</h3>
+          <p>Follow-up conversations cover career comparison, skill gaps, learning paths, project ideas and job-readiness checks — with session memory.</p>
+        </div>
+
+      </div>
+
+      <!-- Architecture -->
+      <div class="card reveal" style="margin-bottom:24px">
+        <div class="card-header">
+          <div class="card-header-left">
+            <h3>🏗️ System Architecture</h3>
+            <p>Understand → Reason → Plan → Act → Personalise</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;text-align:center">
+          <div style="padding:16px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border)">
+            <div style="font-size:24px;margin-bottom:8px">👤</div>
+            <div style="font-size:12px;font-weight:700">Student Profile</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Skills · Marks · Goals</div>
+          </div>
+          <div style="padding:16px;background:var(--surface2);border-radius:var(--r-md);border:1px solid var(--border)">
+            <div style="font-size:24px;margin-bottom:8px">🧠</div>
+            <div style="font-size:12px;font-weight:700">Career Agent</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Understand Intent</div>
+          </div>
+          <div style="padding:16px;background:rgba(15,98,254,.06);border-radius:var(--r-md);border:1px solid rgba(15,98,254,.15)">
+            <div style="font-size:24px;margin-bottom:8px">⚙️</div>
+            <div style="font-size:12px;font-weight:700;color:var(--ibm-blue)">Agentic Planner</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Plan · Select Tool</div>
+          </div>
+          <div style="padding:16px;background:rgba(105,41,196,.06);border-radius:var(--r-md);border:1px solid rgba(105,41,196,.15)">
+            <div style="font-size:24px;margin-bottom:8px">🛠️</div>
+            <div style="font-size:12px;font-weight:700;color:var(--ibm-purple)">Specialist Tools</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Career · Skill · Roadmap</div>
+          </div>
+          <div style="padding:16px;background:rgba(0,157,154,.06);border-radius:var(--r-md);border:1px solid rgba(0,157,154,.15)">
+            <div style="font-size:24px;margin-bottom:8px">🎯</div>
+            <div style="font-size:12px;font-weight:700;color:var(--teal)">Personalised Guidance</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Roadmap · Gap · Score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech stack -->
+      <div class="tech-strip">
+        <div class="tech-badge">🐍 Python</div>
+        <div class="tech-badge">⚗️ Flask</div>
+        <div class="tech-badge">🌐 HTML / CSS / JS</div>
+        <div class="tech-badge">📚 Knowledge Base</div>
+        <div class="tech-badge">🤖 Agentic AI</div>
+        <div class="tech-badge">💎 IBM Granite</div>
+        <div class="tech-badge">🗃️ JSON Data</div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <span>Career Compass</span> · Agentic Career Counseling Companion · Built with IBM Granite &amp; Python Flask
+  </footer>
+
+
+  <!-- ==================== CHAT FAB ==================== -->
+  <button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Open CareerBot">
+    🤖
+    <span class="fab-badge" id="fabBadge">1</span>
+  </button>
+
+
+  <!-- ==================== CHAT PANEL ==================== -->
+  <div class="chat-panel" id="chatPanel" aria-label="CareerBot">
+
+    <div class="chat-header">
+      <div class="chat-identity">
+        <div class="chat-avatar">🤖</div>
+        <div>
+          <div class="chat-name">CareerBot</div>
+          <div class="chat-status">
+            <span class="dot"></span>
+            Career Compass Companion
+          </div>
+        </div>
+      </div>
+      <button class="chat-close" onclick="toggleChat()" aria-label="Close">×</button>
     </div>
 
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        <div class="msg-avatar bot">🤖</div>
+        <div class="msg-bubble">
+          Hi! 👋 I'm <strong>CareerBot</strong>.<br><br>
+          I can help you explore careers, compare roles, find skill gaps,
+          plan learning paths and check your job readiness.<br><br>
+          Fill in your profile first for the most personalised advice!
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-prompts">
+      <button class="quick-btn" onclick="openCareerChat('Which career suits my profile?')">Career fit</button>
+      <button class="quick-btn" onclick="openCareerChat('What skills am I missing?')">Skill gaps</button>
+      <button class="quick-btn" onclick="openCareerChat('What should I learn first?')">Learn first</button>
+      <button class="quick-btn" onclick="openCareerChat('How job-ready am I?')">Readiness</button>
+    </div>
+
+    <div class="chat-input-row">
+      <div class="chat-input-wrap">
+        <input type="text" id="chatInput" placeholder="Ask CareerBot anything…" onkeydown="handleChatKey(event)">
+      </div>
+      <button class="chat-send" id="chatSendBtn" onclick="sendChatMessage()" aria-label="Send">➤</button>
+    </div>
+
+  </div>
 
 
-    <div id="toast" class="toast"></div>
+  <!-- ==================== LOADING OVERLAY ==================== -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
+      <h3 id="loadingTitle">Analysing your profile…</h3>
+      <p id="loadingText">Career Compass is evaluating your skills, interests and career possibilities.</p>
+      <div class="loading-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
 
 
-    <script src="script.js"></script>
+  <!-- ==================== TOAST CONTAINER ==================== -->
+  <div class="toast-container" id="toastContainer"></div>
 
+
+  <script src="script.js"></script>
 </body>
 </html>
